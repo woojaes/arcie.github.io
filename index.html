@@ -134,27 +134,18 @@
       <div class="slides">
         <div class="slide">
           <img src="images/contents1.jpg"
-               srcset="images/contents1.jpg 1x, images/contents1@2x.jpg 2x"
-               sizes="100vw"
-               alt="ARCIE 브랜드 이미지 1"
-               loading="eager" decoding="async"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2000&auto=format&fit=crop'" />
+               data-candidates='["images/contents1.jpg","images/contents1.JPG","images/contents1.jpeg","images/contents1.JPEG"]'
+               alt="ARCIE 브랜드 이미지 1" loading="eager" decoding="async" />
         </div>
         <div class="slide">
           <img src="images/contents2.JPG"
-               srcset="images/contents2.JPG 1x, images/contents2@2x.JPG 2x"
-               sizes="100vw"
-               alt="ARCIE 브랜드 이미지 2"
-               loading="eager" decoding="async"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1520974722070-a2e3a01e48f3?q=80&w=2000&auto=format&fit=crop'" />
+               data-candidates='["images/contents2.JPG","images/contents2.jpg","images/contents2.jpeg","images/contents2.JPEG"]'
+               alt="ARCIE 브랜드 이미지 2" loading="eager" decoding="async" />
         </div>
         <div class="slide">
           <img src="images/contents3.jpeg"
-               srcset="images/contents3.jpeg 1x, images/contents3@2x.jpeg 2x"
-               sizes="100vw"
-               alt="ARCIE 브랜드 이미지 3"
-               loading="eager" decoding="async"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=2000&auto=format&fit=crop'" />
+               data-candidates='["images/contents3.jpeg","images/contents3.jpg","images/contents3.JPG","images/contents3.JPEG"]'
+               alt="ARCIE 브랜드 이미지 3" loading="eager" decoding="async" />
         </div>
       </div>
       <div class="nav">
@@ -308,7 +299,7 @@
   // ---- Footer year (guarded)
   (function(){ var y=document.getElementById('y'); if(y){ y.textContent = new Date().getFullYear(); } })();
 
-  // ---- Carousel logic (simple, guarded)
+  // ---- Carousel logic (simple, guarded) + image fallbacks for mobile/Safari
   (function(){
     var root = document.getElementById('heroCarousel'); if(!root) return;
     var wrap = root.querySelector('.slides'); if(!wrap) return;
@@ -316,27 +307,34 @@
     var prev = root.querySelector('[data-prev]');
     var next = root.querySelector('[data-next]');
     var dots = Array.prototype.slice.call(root.querySelectorAll('.dot'));
-    var i = 0, auto = null, sx = 0, dx = 0;
 
-    function go(n){
-      if(!wrap || !slides.length) return;
-      i = (n + slides.length) % slides.length;
-      wrap.style.transform = 'translateX(' + (-i*100) + '%)';
-      for(var k=0;k<dots.length;k++){ if(dots[k]) dots[k].classList.toggle('active', k===i); }
-      restart();
+    // 1) Load with fallback: try multiple filename cases/extensions
+    function attachFallback(img){
+      try{
+        var list = JSON.parse(img.getAttribute('data-candidates')||'[]');
+        var idx = 0;
+        function tryNext(){
+          idx++; if(idx>=list.length) return; // give up silently
+          img.src = list[idx] + '?v=' + Date.now(); // cache-bust
+        }
+        img.addEventListener('error', tryNext);
+        // Also promote candidate #0 in case of cached broken entry
+        if(list.length && img.src.indexOf(list[0])===-1){ img.src = list[0]; }
+      }catch(e){}
     }
-    function restart(){ if(auto) clearInterval(auto); auto = setInterval(function(){ go(i+1); }, 5000); }
+    Array.prototype.forEach.call(root.querySelectorAll('img'), attachFallback);
 
+    // 2) Basic slider
+    var i = 0, auto = null, sx = 0, dx = 0;
+    function go(n){ i = (n + slides.length) % slides.length; wrap.style.transform = 'translateX(' + (-i*100) + '%)'; for(var k=0;k<dots.length;k++){ if(dots[k]) dots[k].classList.toggle('active', k===i); } restart(); }
+    function restart(){ if(auto) clearInterval(auto); auto = setInterval(function(){ go(i+1); }, 5000); }
     if(prev) prev.onclick = function(){ go(i-1); };
     if(next) next.onclick = function(){ go(i+1); };
     for(var d=0; d<dots.length; d++){ (function(idx){ if(dots[idx]) dots[idx].onclick = function(){ go(idx); }; })(d); }
-
     wrap.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; dx = 0; if(auto) clearInterval(auto); }, {passive:true});
     wrap.addEventListener('touchmove', function(e){ dx = e.touches[0].clientX - sx; }, {passive:true});
     wrap.addEventListener('touchend', function(){ if(Math.abs(dx) > 40){ go(i + (dx<0?1:-1)); } else { restart(); } });
-
     root.addEventListener('keydown', function(e){ if(e.key==='ArrowLeft') go(i-1); if(e.key==='ArrowRight') go(i+1); });
-
     restart();
   })();
 
