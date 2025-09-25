@@ -26,7 +26,7 @@
     .logo img{height:38px;width:auto;display:block}
     .menu-desktop{display:none !important}
     /* Mobile hamburger (left) */
-    .hamburger{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:12px;border:none;background:transparent;cursor:pointer;z-index:110}
+    .hamburger{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:12px;border:none;background:transparent;cursor:pointer;z-index:130}
     .hamburger:focus-visible{outline:2px solid rgba(255,255,255,.9);outline-offset:2px;border-radius:6px}
     .hamburger .bar{display:block;width:20px;height:2px;background:#fff;border-radius:2px;transition:transform .2s ease, opacity .2s ease}
     .hamburger .bar+ .bar{margin-top:4px}
@@ -54,9 +54,9 @@
     .carousel .dot.active{background:#fff}
 
     /* Mobile drawer + backdrop */
-    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:80;display:none}
+    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:110;display:none}
     .backdrop.show{display:block}
-    .mobile{position:fixed;top:0;left:0;height:100dvh;width:min(320px,86%);background:#fff;box-shadow:6px 0 24px rgba(0,0,0,.14);border-right:1px solid var(--border);transform:translateX(-100%);transition:transform .28s ease;z-index:95;display:flex;flex-direction:column}
+    .mobile{position:fixed;top:0;left:0;height:100dvh;width:min(320px,86%);background:#fff;box-shadow:6px 0 24px rgba(0,0,0,.14);border-right:1px solid var(--border);transform:translateX(-100%);transition:transform .28s ease;z-index:120;display:flex;flex-direction:column}
     .mobile.open{transform:translateX(0)}
     .mobile header{background:#fff;color:var(--fg);border-bottom:1px solid var(--border)}
     .mobile .panel{padding:14px 16px}
@@ -273,74 +273,68 @@
   </footer>
 
   <script>
-  // ---- Safe helpers
-  function $(sel, ctx){ return (ctx||document).querySelector(sel); }
-  function $all(sel, ctx){ return Array.prototype.slice.call((ctx||document).querySelectorAll(sel)); }
+  // ---- Minimal, bulletproof mobile drawer (no IIFEs, no optional chaining)
+  function openDrawer(){
+    var drawer = document.getElementById('mobileMenu');
+    var overlay = document.getElementById('overlay');
+    var trigger = document.getElementById('hamburger');
+    if(drawer) drawer.classList.add('open');
+    if(overlay) overlay.classList.add('show');
+    if(trigger) trigger.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('menu-open');
+  }
+  function closeDrawer(){
+    var drawer = document.getElementById('mobileMenu');
+    var overlay = document.getElementById('overlay');
+    var trigger = document.getElementById('hamburger');
+    if(drawer) drawer.classList.remove('open');
+    if(overlay) overlay.classList.remove('show');
+    if(trigger) trigger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+    document.body.classList.remove('menu-open');
+  }
+  function toggleMobile(forceClose){
+    var drawer = document.getElementById('mobileMenu');
+    var isOpen = drawer ? drawer.classList.contains('open') : false;
+    if(forceClose || isOpen){ closeDrawer(); } else { openDrawer(); }
+  }
+  // Esc to close
+  window.addEventListener('keydown', function(e){
+    var drawer = document.getElementById('mobileMenu');
+    if(e.key==='Escape' && drawer && drawer.classList.contains('open')) closeDrawer();
+  });
 
   // ---- Footer year (guarded)
-  (function(){ var y=$('#y'); if(y){ y.textContent = new Date().getFullYear(); } })();
+  (function(){ var y=document.getElementById('y'); if(y){ y.textContent = new Date().getFullYear(); } })();
 
-  // ---- Mobile drawer controls (null-safe + Safari-safe, no optional chaining)
+  // ---- Carousel logic (simple, guarded)
   (function(){
-    var overlay = $('#overlay');
-    var drawer  = $('#mobileMenu');
-    var trigger = $('#hamburger');
-
-    function setExpanded(el, val){ if(el){ el.setAttribute('aria-expanded', String(val)); } }
-
-    window.openDrawer = function(){
-      if(drawer){ drawer.classList.add('open'); }
-      if(overlay){ overlay.classList.add('show'); }
-      setExpanded(trigger, true);
-      document.body.style.overflow = 'hidden';
-      document.body.classList.add('menu-open');
-    };
-    window.closeDrawer = function(){
-      if(drawer){ drawer.classList.remove('open'); }
-      if(overlay){ overlay.classList.remove('show'); }
-      setExpanded(trigger, false);
-      document.body.style.overflow = '';
-      document.body.classList.remove('menu-open');
-    };
-    window.toggleMobile = function(forceClose){
-      var isOpen = drawer ? drawer.classList.contains('open') : false;
-      if(forceClose || isOpen){ window.closeDrawer(); } else { window.openDrawer(); }
-    };
-
-    if(trigger){ trigger.addEventListener('click', function(){ window.toggleMobile(); }); }
-    if(overlay){ overlay.addEventListener('click', function(){ window.toggleMobile(true); }); }
-    window.addEventListener('keydown', function(e){ if(e.key==='Escape' && drawer && drawer.classList.contains('open')) window.closeDrawer(); });
-  })();
-
-  // ---- Carousel logic (guarded)
-  (function(){
-    var root = $('#heroCarousel'); if(!root) return;
-    var wrap = $('.slides', root); if(!wrap) return;
-    var slides = $all('.slide', root);
-    var prev = $('[data-prev]', root);
-    var next = $('[data-next]', root);
-    var dots = $all('.dot', root);
+    var root = document.getElementById('heroCarousel'); if(!root) return;
+    var wrap = root.querySelector('.slides'); if(!wrap) return;
+    var slides = Array.prototype.slice.call(root.querySelectorAll('.slide'));
+    var prev = root.querySelector('[data-prev]');
+    var next = root.querySelector('[data-next]');
+    var dots = Array.prototype.slice.call(root.querySelectorAll('.dot'));
     var i = 0, auto = null, sx = 0, dx = 0;
 
     function go(n){
       if(!wrap || !slides.length) return;
       i = (n + slides.length) % slides.length;
       wrap.style.transform = 'translateX(' + (-i*100) + '%)';
-      dots.forEach(function(d,idx){ if(d) d.classList.toggle('active', idx===i); });
+      for(var k=0;k<dots.length;k++){ if(dots[k]) dots[k].classList.toggle('active', k===i); }
       restart();
     }
     function restart(){ if(auto) clearInterval(auto); auto = setInterval(function(){ go(i+1); }, 5000); }
 
-    if(prev) prev.addEventListener('click', function(){ go(i-1); });
-    if(next) next.addEventListener('click', function(){ go(i+1); });
-    dots.forEach(function(d,idx){ d.addEventListener('click', function(){ go(idx); }); });
+    if(prev) prev.onclick = function(){ go(i-1); };
+    if(next) next.onclick = function(){ go(i+1); };
+    for(var d=0; d<dots.length; d++){ (function(idx){ if(dots[idx]) dots[idx].onclick = function(){ go(idx); }; })(d); }
 
-    // touch/swipe
     wrap.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; dx = 0; if(auto) clearInterval(auto); }, {passive:true});
     wrap.addEventListener('touchmove', function(e){ dx = e.touches[0].clientX - sx; }, {passive:true});
     wrap.addEventListener('touchend', function(){ if(Math.abs(dx) > 40){ go(i + (dx<0?1:-1)); } else { restart(); } });
 
-    // keyboard
     root.addEventListener('keydown', function(e){ if(e.key==='ArrowLeft') go(i-1); if(e.key==='ArrowRight') go(i+1); });
 
     restart();
