@@ -6,7 +6,7 @@
   <title>ARCIE 아르시 — 원페이지</title>
   <meta name="description" content="ARCIE(아르시) — 발달장애 예술·일자리·브랜드와 함께하는 포용적 플랫폼" />
   <meta name="theme-color" content="#0047ff" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="favicon.ico" />
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" rel="stylesheet">
@@ -20,35 +20,41 @@
     .container{width:min(1120px,92%);margin-inline:auto}
 
     /* Header */
-    header{position:sticky;top:0;background:var(--brand);color:#fff;z-index:100;border-bottom:1px solid rgba(255,255,255,.15)}
+    header{position:sticky;top:0;background:var(--brand);color:#fff;z-index:100;border-bottom:1px solid rgba(255,255,255,.15);transition:transform .25s ease;will-change:transform}
     .nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 0;position:relative}
     .logo{display:flex;align-items:center;justify-content:center}
     .logo img{height:38px;width:auto;display:block}
     .menu-desktop{display:none !important}
     /* Mobile hamburger (left) */
-    .hamburger{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:12px;border:none;background:transparent;cursor:pointer}
+    .hamburger{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:12px;border:none;background:transparent;cursor:pointer;z-index:110}
     .hamburger:focus-visible{outline:2px solid rgba(255,255,255,.9);outline-offset:2px;border-radius:6px}
     .hamburger .bar{display:block;width:20px;height:2px;background:#fff;border-radius:2px;transition:transform .2s ease, opacity .2s ease}
     .hamburger .bar+ .bar{margin-top:4px}
-    /* animate to X when open */
     #hamburger[aria-expanded="true"] .bar:nth-child(1){transform:translateY(6px) rotate(45deg)}
     #hamburger[aria-expanded="true"] .bar:nth-child(2){opacity:0}
     #hamburger[aria-expanded="true"] .bar:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
     /* Subnav (under logo) */
-    .subnav-wrap{background:#fff;border-bottom:1px solid var(--border)}
+    .subnav-wrap{background:#fff;border-bottom:1px solid var(--border);transition:transform .25s ease;will-change:transform}
     .subnav{display:flex;gap:26px;align-items:center;justify-content:center;min-height:48px}
     .subnav a{position:relative;font-weight:700;color:#0f172a;padding:10px 2px}
     .subnav a::after{content:"";position:absolute;left:0;bottom:6px;height:2px;width:100%;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .22s ease}
     .subnav a:hover::after,.subnav a:focus-visible::after{transform:scaleX(1)}
 
-    /* Banner */
-    .banner{width:100%;background:#000}
-    .banner figure{margin:0}
-    .banner img{width:100%;height:clamp(280px,52vh,640px);object-fit:cover;object-position:center center;display:block;image-rendering:auto;-ms-interpolation-mode:bicubic}
+    /* Carousel (banner slider) */
+    .carousel{position:relative;overflow:hidden;background:#000}
+    .carousel .slides{display:flex;transition:transform .45s ease;will-change:transform}
+    .carousel .slide{min-width:100%;user-select:none}
+    .carousel img{width:100%;height:clamp(280px,52vh,640px);object-fit:cover;object-position:center}
+    .carousel .nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
+    .carousel button{pointer-events:auto;border:none;background:rgba(0,0,0,.35);color:#fff;width:40px;height:40px;border-radius:999px;cursor:pointer;font-size:18px}
+    .carousel button:hover{background:rgba(0,0,0,.5)}
+    .carousel .dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:8px}
+    .carousel .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.5);border:0}
+    .carousel .dot.active{background:#fff}
 
     /* Mobile drawer + backdrop */
-    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:90;display:none}
+    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:80;display:none}
     .backdrop.show{display:block}
     .mobile{position:fixed;top:0;left:0;height:100dvh;width:min(320px,86%);background:#fff;box-shadow:6px 0 24px rgba(0,0,0,.14);border-right:1px solid var(--border);transform:translateX(-100%);transition:transform .28s ease;z-index:95;display:flex;flex-direction:column}
     .mobile.open{transform:translateX(0)}
@@ -84,6 +90,11 @@
     .legal .container{display:flex;justify-content:center;text-align:center}
     .legal small{color:#475569}
 
+    /* Hide on scroll up */
+    body.scrolling-up header, body.scrolling-up .subnav-wrap{transform:translateY(-100%)}
+    /* keep header visible while mobile menu open */
+    body.menu-open header, body.menu-open .subnav-wrap{transform:none !important}
+
     @media (max-width: 900px){
       .hamburger{display:block}
       .subnav{gap:18px;overflow:auto;white-space:nowrap;padding-inline:16px}
@@ -92,26 +103,6 @@
       .grid-2{grid-template-columns:1fr}
       .footer-grid{grid-template-columns:1fr}
     }
-    /* Carousel (banner slider) */
-    .carousel{position:relative;overflow:hidden;background:#000}
-    .carousel .slides{display:flex;transition:transform .45s ease;will-change:transform}
-    .carousel .slide{min-width:100%;user-select:none}
-    .carousel img{width:100%;height:clamp(280px,52vh,640px);object-fit:cover;object-position:center}
-    .carousel .nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
-    .carousel button{pointer-events:auto;border:none;background:rgba(0,0,0,.35);color:#fff;width:40px;height:40px;border-radius:999px;cursor:pointer;font-size:18px}
-    .carousel button:hover{background:rgba(0,0,0,.5)}
-    .carousel .dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:8px}
-    .carousel .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.5);border:0}
-    .carousel .dot.active{background:#fff}
-    /* Partners strip */
-    .logo-strip .logo-cell{display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;background:#fff;padding:14px}
-    .logo-strip img{max-width:100%;max-height:44px;filter:grayscale(100%);opacity:.85;transition:filter .2s ease, opacity .2s ease, transform .2s ease}
-    .logo-strip img:hover{filter:none;opacity:1;transform:translateY(-1px)}
-    @media(max-width:900px){.logo-strip{grid-template-columns:repeat(2,1fr)}}
-
-    /* Show-on-scroll-down, hide-on-scroll-up */
-    header, .subnav-wrap{transition:transform .25s ease; will-change: transform}
-    body.scrolling-up header, body.scrolling-up .subnav-wrap{transform:translateY(-100%)}
   </style>
 </head>
 <body>
@@ -139,16 +130,31 @@
 
   <!-- BANNER (슬라이드 3장) -->
   <section class="banner" aria-label="브랜드 이미지">
-    <div class="carousel" id="heroCarousel">
+    <div class="carousel" id="heroCarousel" tabindex="0">
       <div class="slides">
         <div class="slide">
-          <img src="images/contents1.jpg" srcset="images/contents1.jpg 1x, images/contents1@2x.jpg 2x" sizes="100vw" alt="ARCIE 브랜드 이미지 1" loading="eager" />
+          <img src="images/contents1.jpg"
+               srcset="images/contents1.jpg 1x, images/contents1@2x.jpg 2x"
+               sizes="100vw"
+               alt="ARCIE 브랜드 이미지 1"
+               loading="eager" decoding="async"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2000&auto=format&fit=crop'" />
         </div>
         <div class="slide">
-          <img src="images/contents2.JPG" srcset="images/contents2.JPG 1x, images/contents2@2x.JPG 2x" sizes="100vw" alt="ARCIE 브랜드 이미지 2" loading="lazy" />
+          <img src="images/contents2.JPG"
+               srcset="images/contents2.JPG 1x, images/contents2@2x.JPG 2x"
+               sizes="100vw"
+               alt="ARCIE 브랜드 이미지 2"
+               loading="eager" decoding="async"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1520974722070-a2e3a01e48f3?q=80&w=2000&auto=format&fit=crop'" />
         </div>
         <div class="slide">
-          <img src="images/contents3.jpeg" srcset="images/contents3.jpeg 1x, images/contents3@2x.jpeg 2x" sizes="100vw" alt="ARCIE 브랜드 이미지 3" loading="lazy" />
+          <img src="images/contents3.jpeg"
+               srcset="images/contents3.jpeg 1x, images/contents3@2x.jpeg 2x"
+               sizes="100vw"
+               alt="ARCIE 브랜드 이미지 3"
+               loading="eager" decoding="async"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=2000&auto=format&fit=crop'" />
         </div>
       </div>
       <div class="nav">
@@ -224,9 +230,6 @@
         <article class="card"><strong>아티스트 작업실 이야기</strong><br/><span style="color:var(--muted)">첫 컬렉션 샘플 공개.</span></article>
       </div>
     </section>
-
-    <!-- PARTNERS / COLLAB -->
-    
   </main>
 
   <!-- FOOTER -->
@@ -236,7 +239,7 @@
         <h3>고객센터</h3>
         <p><strong>전화</strong><br/>02-870-0337</p>
         <p><strong>이메일</strong><br/><a href="mailto:mulgogienter@gmail.com">mulgogienter@gmail.com</a></p>
-        <p><strong>운영시간</strong><br/>평일 09:00 ~ 18:00 (점심 13:00 ~ 14:00)<br/>휴무 : 토/일/공휴일</p>
+        <p><strong>운영시간</strong><br/>평일 09:00 ~ 18:00 (점심 12:00 ~ 13:00)<br/>휴무 : 토/일/공휴일</p>
       </section>
       <section>
         <h3>사업자정보</h3>
@@ -246,7 +249,6 @@
           주소: 서울특별시 서초구 강남대로2길 95, 2층 204호 (양재동, 신일빌라)<br/>
           사업자 등록번호: <strong>426-86-03616</strong>
         </p>
-        <p><a class="btn" href="#" onclick="openBiz()" style="padding:8px 12px"></a></p>
       </section>
       <section>
         <h3>SNS</h3>
@@ -270,81 +272,92 @@
     </div>
   </footer>
 
-  <!-- 사업자등록증 모달 -->
   <script>
-    // Footer year
-    document.getElementById('y').textContent = new Date().getFullYear();
+  // ---- Safe helpers
+  function $(sel, ctx){ return (ctx||document).querySelector(sel); }
+  function $all(sel, ctx){ return Array.prototype.slice.call((ctx||document).querySelectorAll(sel)); }
 
-    // Mobile drawer controls
-    const overlay = document.getElementById('overlay');
-    const drawer  = document.getElementById('mobileMenu');
-    const trigger = document.getElementById('hamburger');
-    function openDrawer(){
-      drawer.classList.add('open');
-      overlay.classList.add('show');
-      trigger?.setAttribute('aria-expanded','true');
-      document.body.style.overflow='hidden';
-    }
-    function closeDrawer(){
-      drawer.classList.remove('open');
-      overlay.classList.remove('show');
-      trigger?.setAttribute('aria-expanded','false');
-      document.body.style.overflow='';
-    }
-    function toggleMobile(forceClose){
-      const isOpen = drawer.classList.contains('open');
-      if(forceClose || isOpen){ closeDrawer(); } else { openDrawer(); }
-    }
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && drawer.classList.contains('open')) closeDrawer(); });
+  // ---- Footer year (guarded)
+  (function(){ var y=$('#y'); if(y){ y.textContent = new Date().getFullYear(); } })();
 
-    // Biz modal helpers
-    function openBiz(){ document.getElementById('bizModal').showModal(); }
-    function closeBiz(){ document.getElementById('bizModal').close(); }
-    // Carousel logic
-    (function(){
-      const root = document.getElementById('heroCarousel');
-      if(!root) return;
-      const slidesWrap = root.querySelector('.slides');
-      const slides = Array.from(root.querySelectorAll('.slide'));
-      const prev = root.querySelector('[data-prev]');
-      const next = root.querySelector('[data-next]');
-      const dots = Array.from(root.querySelectorAll('.dot'));
-      let i = 0, auto, touchStartX = 0, touchDX = 0;
+  // ---- Mobile drawer controls (null-safe + Safari-safe, no optional chaining)
+  (function(){
+    var overlay = $('#overlay');
+    var drawer  = $('#mobileMenu');
+    var trigger = $('#hamburger');
 
-      function go(n){ i = (n + slides.length) % slides.length; slidesWrap.style.transform = `translateX(${-i*100}%)`; dots.forEach((d,idx)=> d.classList.toggle('active', idx===i)); restart(); }
-      function restart(){ clearInterval(auto); auto = setInterval(()=> go(i+1), 5000); }
+    function setExpanded(el, val){ if(el){ el.setAttribute('aria-expanded', String(val)); } }
 
-      prev.addEventListener('click', ()=> go(i-1));
-      next.addEventListener('click', ()=> go(i+1));
-      dots.forEach((d,idx)=> d.addEventListener('click', ()=> go(idx)));
+    window.openDrawer = function(){
+      if(drawer){ drawer.classList.add('open'); }
+      if(overlay){ overlay.classList.add('show'); }
+      setExpanded(trigger, true);
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('menu-open');
+    };
+    window.closeDrawer = function(){
+      if(drawer){ drawer.classList.remove('open'); }
+      if(overlay){ overlay.classList.remove('show'); }
+      setExpanded(trigger, false);
+      document.body.style.overflow = '';
+      document.body.classList.remove('menu-open');
+    };
+    window.toggleMobile = function(forceClose){
+      var isOpen = drawer ? drawer.classList.contains('open') : false;
+      if(forceClose || isOpen){ window.closeDrawer(); } else { window.openDrawer(); }
+    };
 
-      // touch/swipe
-      slidesWrap.addEventListener('touchstart', (e)=>{ touchStartX = e.touches[0].clientX; touchDX = 0; clearInterval(auto); }, {passive:true});
-      slidesWrap.addEventListener('touchmove', (e)=>{ touchDX = e.touches[0].clientX - touchStartX; }, {passive:true});
-      slidesWrap.addEventListener('touchend', ()=>{ if(Math.abs(touchDX) > 40){ go(i + (touchDX<0?1:-1)); } else { restart(); } });
+    if(trigger){ trigger.addEventListener('click', function(){ window.toggleMobile(); }); }
+    if(overlay){ overlay.addEventListener('click', function(){ window.toggleMobile(true); }); }
+    window.addEventListener('keydown', function(e){ if(e.key==='Escape' && drawer && drawer.classList.contains('open')) window.closeDrawer(); });
+  })();
 
-      // keyboard
-      root.addEventListener('keydown', (e)=>{ if(e.key==='ArrowLeft') go(i-1); if(e.key==='ArrowRight') go(i+1); });
+  // ---- Carousel logic (guarded)
+  (function(){
+    var root = $('#heroCarousel'); if(!root) return;
+    var wrap = $('.slides', root); if(!wrap) return;
+    var slides = $all('.slide', root);
+    var prev = $('[data-prev]', root);
+    var next = $('[data-next]', root);
+    var dots = $all('.dot', root);
+    var i = 0, auto = null, sx = 0, dx = 0;
 
+    function go(n){
+      if(!wrap || !slides.length) return;
+      i = (n + slides.length) % slides.length;
+      wrap.style.transform = 'translateX(' + (-i*100) + '%)';
+      dots.forEach(function(d,idx){ if(d) d.classList.toggle('active', idx===i); });
       restart();
-    })();
-    // Show header/subnav when scrolling down; hide when scrolling up
-    (function(){
-      let lastY = window.scrollY;
-      window.addEventListener('scroll', ()=>{
-        const y = window.scrollY;
-        if(y < 10){ document.body.classList.remove('scrolling-up'); lastY = y; return; }
-        if(y > lastY + 5){
-          // scrolling down -> show
-          document.body.classList.remove('scrolling-up');
-        } else if(y < lastY - 5){
-          // scrolling up -> hide
-          document.body.classList.add('scrolling-up');
-        }
-        lastY = y;
-      }, {passive:true});
-    })();
-  </script>
+    }
+    function restart(){ if(auto) clearInterval(auto); auto = setInterval(function(){ go(i+1); }, 5000); }
+
+    if(prev) prev.addEventListener('click', function(){ go(i-1); });
+    if(next) next.addEventListener('click', function(){ go(i+1); });
+    dots.forEach(function(d,idx){ d.addEventListener('click', function(){ go(idx); }); });
+
+    // touch/swipe
+    wrap.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; dx = 0; if(auto) clearInterval(auto); }, {passive:true});
+    wrap.addEventListener('touchmove', function(e){ dx = e.touches[0].clientX - sx; }, {passive:true});
+    wrap.addEventListener('touchend', function(){ if(Math.abs(dx) > 40){ go(i + (dx<0?1:-1)); } else { restart(); } });
+
+    // keyboard
+    root.addEventListener('keydown', function(e){ if(e.key==='ArrowLeft') go(i-1); if(e.key==='ArrowRight') go(i+1); });
+
+    restart();
+  })();
+
+  // ---- Show header/subnav when scrolling down; hide when scrolling up (paused while menu open)
+  (function(){
+    var lastY = window.scrollY || 0;
+    window.addEventListener('scroll', function(){
+      if(document.body.classList.contains('menu-open')) return; // keep header visible when drawer is open
+      var y = window.scrollY || 0;
+      if(y < 10){ document.body.classList.remove('scrolling-up'); lastY = y; return; }
+      if(y > lastY + 5){ document.body.classList.remove('scrolling-up'); }
+      else if(y < lastY - 5){ document.body.classList.add('scrolling-up'); }
+      lastY = y;
+    }, {passive:true});
+  })();
+</script>
 </body>
 </html>
-
