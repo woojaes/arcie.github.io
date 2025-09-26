@@ -91,39 +91,40 @@
     .prod .meta{padding:10px 12px}
     .prod .name{font-weight:800}
     .prod .price{font-weight:700}
-
-    /* Partners */
+/* Partners — 균일 타일 + 비율 유지 */
 .partners{padding:40px 0}
-.partner-logos{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
-./* 파트너 로고 박스 제거 */
-.partner-logos .partner{
-  padding:0;
-  border:none;
-  background:transparent;
-  box-shadow:none;
-  border-radius:0;
+.partner-logos{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:16px;
+  align-items:center;
 }
-
-/* 박스 자체의 호버 효과도 제거 */
-.partner-logos .partner:hover{
-  transform:none;
-  box-shadow:none;
-  border-color:transparent;
+.partner-logos a{
+  /* 타일 크기를 동일하게 맞춤 */
+  height:70px;                 /* ← 타일 높이(필요시 60~80px로 조절) */
+  display:flex; align-items:center; justify-content:center;
+  padding:8px 12px;
+  background:transparent;      /* 박스 보더/배경 없음 */
+  border:none; box-shadow:none; border-radius:0;
 }
-
-/* 이미지에만 효과 적용 */
-.partner-logos .partner img{
-  height:44px; width:auto; display:block;
+.partner-logos img{
+  max-height:100%; max-width:100%;
+  width:auto; height:auto;     /* 비율 유지하며 타일 안에 꽉 차게 */
+  object-fit:contain; display:block;
+  /* 기본: 흑백 & 채도↓ */
   filter:grayscale(100%) saturate(0) brightness(.95) opacity(.9);
   transition:filter .22s ease, transform .22s ease;
 }
-
-.partner-logos .partner img:hover{
+.partner-logos img:hover{
+  /* 호버: 채도/밝기 업 + 살짝 떠오름 */
   filter:grayscale(15%) saturate(1.1) brightness(1.02) opacity(1);
   transform:translateY(-2px);
 }
 
-
+/* 모바일에서 타일 살짝 낮춤 */
+@media (max-width: 600px){
+  .partner-logos a{ height:60px; }
+}
 
     /* Footer */
     .site-footer{background:#f3f4f6;color:#111827;margin-top:56px}
@@ -303,14 +304,19 @@
 
 <section id="partners" class="container partners" aria-labelledby="partners-title">
   <h2 id="partners-title">Partners</h2>
-  <p style="color:var(--muted);margin-top:0">서울특별시 어린이병원과 함께합니다.</p>
+  <p style="color:var(--muted);margin-top:0">아르시와 함께하는 파트너</p>
+
   <div class="partner-logos">
-    <!-- 필요하면 다른 파트너들도 같은 형식으로 추가 -->
-    <a class="partner" href="#" aria-label="서울특별시 어린이병원">
-      <img src="images/hosp_logo.png" alt="서울특별시 어린이병원 로고">
-    </a>
+    <a href="#" aria-label="서울특별시 어린이병원"><img src="images/hosp_logo.png" alt="서울특별시 어린이병원 로고"></a>
+    <a href="#" aria-label="LOT Vacuum"><img src="images/vaccum.png" alt="LOT Vacuum 로고"></a>
+    <a href="#" aria-label="LOT TS"><img src="images/tes.png" alt="LOT TS 로고"></a>
+    <a href="#" aria-label="LOT CES"><img src="images/ces.png" alt="LOT CES 로고"></a>
+    <a href="#" aria-label="ITEK"><img src="images/itek.png" alt="ITEK 로고"></a>
+    <a href="#" aria-label="오뚜기"><img src="images/ottuki.png" alt="오뚜기 로고"></a>
+    <a href="#" aria-label="조흥"><img src="images/joheng.png" alt="조흥 로고"></a>
   </div>
 </section>
+
   <!-- FOOTER (SNS 아이콘: 예전 스타일 유지) -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-grid">
@@ -419,4 +425,3 @@
 
 </body>
 </html>
-
