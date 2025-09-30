@@ -98,8 +98,8 @@
     .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
     .circle:focus-within .flip,.circle:hover .flip{transform:rotateY(180deg)}
     .face{position:absolute;inset:0;border-radius:999px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;overflow:hidden;text-align:center}
-    .front h3{font-size:18px;margin:0;color:#0b1220}
-    .front small{opacity:.8;color:#0b1220}
+    .front h3{font-size:18px;margin:0;color:#ffffff}
+    .front small{opacity:.8;color:#ffffff}
     .back{transform:rotateY(180deg);background:var(--circleBack);padding:16px}
     .back p{font-size:14px;color:#334155}
     .front.caring{background:linear-gradient(135deg,var(--caring),#ffc93b)}
@@ -235,6 +235,7 @@
 .fadein{ opacity:0; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease; }
 .fadein.visible{ opacity:1; transform:translateY(0); }
 
+
   </style>
 </head>
 <body>
@@ -288,6 +289,7 @@
   <div class="spacer-lg"></div>
 
   <!-- 2) 소개 (발달장애… 문구) -->
+   <br>
   <section id="about" class="container" aria-labelledby="hero-title">
     <h1 id="hero-title">발달장애 아티스트와 함께 만드는 따뜻한 브랜드, ARCIE</h1>
     <p class="lead">아르시는 예술과 일을 잇는 플랫폼입니다.</p>
@@ -322,7 +324,7 @@
   </section>
 
   <div class="spacer-lg"></div>
-
+<br>
   <!-- 비전 3C -->
   <section id="vision" class="container vision" aria-labelledby="vision-title">
     <h2 id="vision-title">ARCIE 비전</h2>
@@ -349,7 +351,8 @@
   </section>
 
   <div class="spacer-lg"></div>
-
+<Br>
+  <Br><br>
   <!-- 온라인스토어 -->
   <section id="online" class="container" aria-labelledby="store-title">
     <h2 id="store-title">온라인스토어</h2>
@@ -368,10 +371,10 @@
   </section>
 
   <div class="spacer-lg"></div>
-
+<br><br><br>
   <!-- 팝업스토어 -->
   <section id="popup" class="container" aria-labelledby="popup-title">
-    <h2 id="popup-title">팝업스토어 — <strong>ARCIE Pop-up Store 어린이병원점</strong></h2>
+    <h2 id="popup-title">팝업스토어 <p> <br> <strong>ARCIE Pop-up Store 어린이병원점</strong></h2>
 
 <!-- 대표 이미지 (클릭 시 링크 이동) -->
 <figure class="popup-hero">
@@ -406,15 +409,23 @@
   </section>
 
   <div class="spacer-lg"></div>
-
+<br><br><br>
   <!-- 소식(스토리) - 노랑 CTA, “영상으로” 문구 제거 -->
+<!-- STORY (배너급 영상 섹션) -->
 <section id="story" class="container" aria-labelledby="story-title" style="padding-bottom:12px">
   <div class="story" id="storyCard">
-    <video src="images/story.mp4" autoplay muted loop playsinline preload="none" poster="images/contents1.jpg"></video>
+    <video id="storyVideo"
+      muted playsinline webkit-playsinline autoplay loop preload="metadata"
+      poster="images/contents1.jpg"
+      data-fallback="images/contents1.jpg">
+      <source src="images/story.mp4" type="video/mp4">
+      <!-- 있으면 유지, 없으면 이 줄 삭제 -->
+      <source src="images/story.webm" type="video/webm">
+    </video>
     <div class="scrim"></div>
     <div class="content">
       <h2 id="story-title" class="fadein">ARCIE의 이야기가 궁금하다면?</h2>
-      <a class="cta fadein" id="storyCta" href="#" target="_blank" rel="noopener" aria-label="바로가기">바로가기 ↗</a>
+      <a class="cta fadein" id="storyCta" href="#" target="_blank" rel="noopener">바로가기 ↗</a>
     </div>
   </div>
 </section>
@@ -449,7 +460,7 @@
         <h4 id="biz-title">사업자정보</h4>
         <p>상호명: (주)물고기엔터</p>
         <p>대표자: 채종성</p>
-             <p>사업자 등록번호: 426-86-03616</p>
+        <p>사업자 등록번호: 426-86-03616</p>
       </section>
       <section aria-labelledby="sns-title">
         <h4 id="sns-title">SNS</h4>
@@ -574,8 +585,38 @@
     }, {threshold: 0.25});
     items.forEach(el=> io.observe(el));
   })();
+(function(){
+  const v = document.getElementById('storyVideo');
+  if(!v) return;
 
+  const fallbackSrc = v.getAttribute('data-fallback') || v.getAttribute('poster');
+  const swapToImage = () => {
+    if (!fallbackSrc) return;
+    const img = new Image();
+    img.src = fallbackSrc;
+    img.alt = "ARCIE 스토리";
+    img.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;";
+    v.replaceWith(img);
+  };
+
+  // iOS 등에서 autoplay 테스트
+  const tryPlay = async () => {
+    try {
+      await v.play(); // 성공 시 그대로 유지
+    } catch (e) {
+      swapToImage();  // 실패하면 즉시 이미지로 전환
+    }
+  };
+
+  if (v.readyState >= 2) tryPlay();
+  else v.addEventListener('loadeddata', tryPlay, {once:true});
+
+  // 스크롤로 화면에 들어왔을 때 한 번 더 시도(가끔 첫 로드 실패 대비)
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ tryPlay(); io.disconnect(); }});
+  }, {threshold: .35});
+  io.observe(v);
+})();
   </script>
 </body>
 </html>
-
