@@ -10,442 +10,862 @@
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --fg:#0f172a; --bg:#fff; --brand:#0047ff; --border:#e5e7eb; --muted:#64748b;
-      --ham:#fff; --ham-active:#ffd84d;
-      --caring:#ffd84d; --creative:#8b5cf6; --connecting:#22c55e; --circleBack:#f5f7fa;
-      --storyYellow:#ffe578;
+      --fg:#0f172a;
+      --bg:#ffffff;
+      --muted:#64748b;
+      --brand:#0047ff;
+      --border:#e5e7eb;
+
+      --surface:#ffffff;
+      --surface-2:#f6f7f9;
+
+      --radius:14px;
+      --shadow: 0 12px 28px rgba(0,0,0,.09);
+
+      --yellow:#ffe578;
+      --yellow-2:#fff3b0;
+
+      --caring:#ffd84d;
+      --creative:#8b5cf6;
+      --connecting:#22c55e;
+      --circleBack:#f5f7fa;
     }
+
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
-      font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:"SUIT Variable","Pretendard Variable",Pretendard,system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+      line-height:1.5;
+      letter-spacing:-0.2px;
+    }
     a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    h1,h2,h3,h4{margin:0}
+    p{margin:0}
+    :focus-visible{outline:3px solid rgba(0,71,255,.35);outline-offset:3px;border-radius:12px}
+
     .container{width:min(1120px,92%);margin-inline:auto}
-    h1,h2,h3{font-family:"Manrope",sans-serif}
-    h1{font-weight:800;font-size:clamp(24px,3.8vw,40px);margin:0 0 8px}
-    h2{font-weight:800;font-size:clamp(20px,3vw,26px);margin:0 0 12px}
-    h3{font-weight:800;font-size:18px;margin:0 0 8px}
-    p{margin:0 0 10px}
-    .lead{color:var(--muted)}
-    section{scroll-margin-top:96px}
-    .spacer{height:28px}
-    .spacer-lg{height:40px}
+    .section{padding:50px 0}
+    .section--alt{background:var(--surface-2)}
+    .section__head{margin-bottom:18px}
+    .section__head h2{
+      font-weight:900;
+      font-size:clamp(20px,3vw,28px);
+      margin-bottom:8px;
+      letter-spacing:-0.5px;
+    }
+    .lead{color:var(--muted);font-size:15px}
 
-    /* HEADER */
-    header{position:sticky;top:0;z-index:100;background:var(--brand);color:#fff;border-bottom:1px solid rgba(255,255,255,.15)}
-    .nav{display:flex;align-items:center;justify-content:center;position:relative;padding:10px 0}
-    .logo img{height:36px;width:auto;display:block}
-    .hamburger{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);
-      width:44px;height:44px;padding:12px;border:none;background:transparent;cursor:pointer}
-    .hamburger .bar{display:block;width:20px;height:2px;background:var(--ham);border-radius:2px;transition:.2s}
-    .hamburger .bar+.bar{margin-top:4px}
-    #hamburger[aria-expanded="true"] .bar:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    #hamburger[aria-expanded="true"] .bar:nth-child(2){opacity:0}
-    #hamburger[aria-expanded="true"] .bar:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    #hamburger[aria-expanded="true"] .bar{background:var(--ham-active)}
+    /* ===== Buttons ===== */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:10px 14px;border-radius:999px;font-weight:900;
+      border:1px solid var(--border);background:#fff;
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.08)}
+    .btn--primary{background:var(--brand);border-color:transparent;color:#fff}
+    .btn--dark{background:#111;border-color:transparent;color:#fff}
+    .btn--sm{padding:8px 12px;font-size:13px}
 
-    /* SUBNAV (얇게) */
-    .subnav-wrap{background:#fff;border-bottom:1px solid var(--border)}
-    .subnav{display:flex;gap:24px;align-items:center;justify-content:center;min-height:44px}
-    .subnav a{position:relative;font-family:"Manrope",sans-serif;font-weight:600;color:#111;padding:8px 4px}
-    .subnav a::after{content:"";position:absolute;left:0;bottom:4px;height:2px;width:100%;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .2s}
-    .subnav a:hover::after,.subnav a:focus-visible::after{transform:scaleX(1)}
-
-    /* MOBILE DRAWER */
-    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(1.5px);z-index:90;display:none}
-    .backdrop.show{display:block}
-    .mobile{position:fixed;top:0;left:0;height:100dvh;width:min(320px,86%);background:#fff;border-right:1px solid var(--border);
-      box-shadow:6px 0 24px rgba(0,0,0,.14);transform:translateX(-100%);transition:transform .28s ease;z-index:95;display:flex;flex-direction:column}
-    .mobile.open{transform:translateX(0)}
-    .mobile header{padding:8px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:flex-end}
-    .mobile .close-btn{background:transparent;border:none;font-size:22px;cursor:pointer;color:#111;width:40px;height:40px}
-    .mobile nav{display:flex;flex-direction:column;gap:8px;padding:10px}
-    .mobile nav a{padding:12px 14px;border-radius:8px;font-weight:700}
-    .mobile nav a:hover{background:#f3f4f6}
-
-    /* CAROUSEL (HERO & CHARACTERS 공통) */
-    .carousel{position:relative;overflow:hidden;background:#000;border-radius:10px}
-    .carousel .slides{display:flex;transition:transform .45s ease}
-    .carousel .slide{min-width:100%}
-    .carousel img{width:100%;height:clamp(280px,52vh,640px);object-fit:cover}
-    .carousel .nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
-    .carousel button{pointer-events:auto;border:none;background:rgba(0,0,0,.35);color:#fff;width:40px;height:40px;border-radius:999px;cursor:pointer}
-    .carousel .dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:8px}
-    .carousel .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.5);border:0}
-    .carousel .dot.active{background:#fff}
-
-    /* CHARACTERS */
-    .arcie-carousel{position:relative;overflow:hidden;border-radius:10px}
-    .arcie-carousel .slides{display:flex;transition:transform .45s ease}
-    .arcie-carousel .slide{min-width:100%;position:relative;display:flex;align-items:center;justify-content:center;background:#111}
-    .arcie-carousel img{width:100%;height:clamp(260px,48vh,560px);object-fit:contain;display:block}
-    .arcie-carousel .cap{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-weight:800;font-size:14px;padding:6px 10px;border-radius:999px}
-    .arcie-carousel .nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
-    .arcie-carousel .nav button{pointer-events:auto;border:none;background:rgba(0,0,0,.35);color:#fff;width:40px;height:40px;border-radius:999px;cursor:pointer}
-    .arcie-carousel .nav button:hover{background:rgba(0,0,0,.5)}
-    .arcie-carousel .dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:8px}
-    .arcie-carousel .dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.5);border:0;cursor:pointer}
-    .arcie-carousel .dot.active{background:#fff}
-
-    /* VISION 3C */
-    .vision{padding:10px 0 0}
-    .vision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:center}
-    .circle{position:relative;width:100%;aspect-ratio:1/1;perspective:1000px;display:flex;align-items:center;justify-content:center}
-    .flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
-    .circle:focus-within .flip,.circle:hover .flip{transform:rotateY(180deg)}
-    .face{position:absolute;inset:0;border-radius:999px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;overflow:hidden;text-align:center}
-    .front h3{font-size:18px;margin:0;color:#ffffff}
-    .front small{opacity:.8;color:#ffffff}
-    .back{transform:rotateY(180deg);background:var(--circleBack);padding:16px}
-    .back p{font-size:14px;color:#334155}
-    .front.caring{background:linear-gradient(135deg,var(--caring),#ffc93b)}
-    .front.creative{background:linear-gradient(135deg,var(--creative),#6d28d9);color:#fff}
-    .front.connect{background:linear-gradient(135deg,var(--connecting),#16a34a);color:#0b1220}
-    @media (max-width:900px){
-      .vision-grid{grid-template-columns:repeat(3,1fr)}
-      .front h3{font-size:16px}
-      .back p{font-size:13px}
+    /* ===== Header ===== */
+    .site-header{
+      position:sticky;top:0;z-index:100;
+      background:var(--brand);color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.18);
+    }
+    .site-header__inner{
+      display:grid;
+      grid-template-columns: 44px 1fr auto;
+      align-items:center;
+      gap:10px;
+      padding:10px 0;
     }
 
-    /* ONLINE STORE (등장 모션) */
-    .prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-    .prod{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transform:translateY(14px);opacity:0}
-    .prod.reveal{transform:none;opacity:1;transition:transform .6s ease, opacity .6s ease}
-    .prod .img-wrap{background:#f8fafc;display:flex;align-items:center;justify-content:center;aspect-ratio:1/1}
-    .prod img{max-width:92%;max-height:92%;object-fit:contain;display:block}
-    .prod .meta{padding:10px 12px}
-    .prod .name{font-weight:700}
-    .prod .price{font-weight:700}
+    /* ✅ 햄버거: 새 디자인 */
+    .hamburger{
+      width:44px;height:44px;
+      display:inline-flex;align-items:center;justify-content:center;
+      border:none;cursor:pointer;
+      border-radius:14px;
+      background:rgba(255,255,255,.12);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+      transition:background .18s ease, transform .18s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hamburger:hover{background:rgba(255,255,255,.18)}
+    .hamburger:active{transform:scale(.98)}
+    .hamburger .bars{
+      width:18px;height:14px;
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .hamburger .bar{
+      width:18px;height:2px;border-radius:999px;
+      background:#fff;
+      transition:transform .2s ease, opacity .2s ease, width .2s ease;
+    }
+    .hamburger[aria-expanded="true"]{background:rgba(255,255,255,.22)}
+    .hamburger[aria-expanded="true"] .bar:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .hamburger[aria-expanded="true"] .bar:nth-child(2){opacity:0}
+    .hamburger[aria-expanded="true"] .bar:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
-    /* STORY (노랑 CTA, “영상” 문구 제거) */
-    .story{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--storyYellow);
-      transform:translateY(18px);opacity:0;transition:transform .6s ease, opacity .6s ease}
-    .story.raise{transform:none;opacity:1}
-    .story video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.05) brightness(1.05)}
-    .story .scrim{position:absolute;inset:0;background:linear-gradient(to right, rgba(255,229,120,.85), rgba(255,229,120,.55), rgba(255,229,120,.2))}
-    .story .content{position:relative;z-index:1;padding:26px;display:flex;flex-direction:column;gap:10px}
-    .story h2{margin:0;font-size:clamp(20px,3vw,26px)}
-    .story .cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:#111;color:#fff;font-weight:800;width:fit-content;border:1px solid rgba(255,255,255,.2)}
-    .story .cta:hover{transform:translateY(-1px)}
+    .site-header__logo{justify-self:center;display:flex;align-items:center}
+    .site-header__logo img{height:34px;width:auto}
 
-    /* PARTNERS */
-    .partners{padding:32px 0}
-    .partner-logos{display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:16px;align-items:center}
-    .partner-logos a{height:70px;display:flex;align-items:center;justify-content:center;padding:8px 12px;background:transparent;border:none}
-    .partner-logos img{max-height:100%;max-width:100%;object-fit:contain;display:block;filter:grayscale(100%) saturate(0) brightness(.95) opacity(.9);transition:filter .22s ease, transform .22s ease}
+    .site-header__right{justify-self:end;display:flex;gap:8px;align-items:center}
+    .site-header__nav{display:flex;gap:10px;align-items:center;font-weight:900}
+    .site-header__nav a{padding:8px 10px;border-radius:999px;opacity:.96}
+    .site-header__nav a:hover{background:rgba(255,255,255,.12)}
+    @media (max-width:900px){ .site-header__nav{display:none} }
+
+    /* ===== Mobile Drawer ===== */
+    .backdrop{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.45);
+      backdrop-filter:blur(2px);
+      z-index:90;
+      display:none;
+    }
+    .backdrop.show{display:block}
+
+    .drawer{
+      position:fixed;top:0;left:0;
+      width:min(340px,86%);
+      height:100dvh;
+      background:#fff;color:#111;
+      border-right:1px solid var(--border);
+      box-shadow: 10px 0 30px rgba(0,0,0,.16);
+      transform:translateX(-100%);
+      transition:transform .25s ease;
+      z-index:95;
+      display:flex;flex-direction:column;
+    }
+    .drawer.open{transform:translateX(0)}
+    .drawer__top{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px;border-bottom:1px solid var(--border);
+    }
+    .drawer__brand{font-weight:900;letter-spacing:-0.3px}
+    .drawer__close{
+      width:40px;height:40px;border:none;background:#f3f4f6;cursor:pointer;
+      font-size:20px;border-radius:12px;
+    }
+    .drawer__close:hover{background:#eaecef}
+    .drawer__nav{display:flex;flex-direction:column;gap:6px;padding:12px}
+    .drawer__nav a{padding:12px;border-radius:12px;font-weight:900}
+    .drawer__nav a:hover{background:#f3f4f6}
+    .drawer__foot{margin-top:auto;padding:12px;border-top:1px solid var(--border)}
+    .drawer__foot .btn{width:100%}
+
+    /* ===== Hero (슬라이드만) ===== */
+    .hero{padding:20px 0 34px}
+    .hero__grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+      align-items:center;
+    }
+
+    /* ===== Carousel ===== */
+    .carousel{
+      position:relative;
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:#111;
+      box-shadow:var(--shadow);
+    }
+    .carousel__track{display:flex;transition:transform .45s ease}
+    .carousel__slide{min-width:100%}
+    .carousel__img{
+      width:100%;
+      height:clamp(260px,52vh,620px);
+      object-fit:cover;
+      object-position:center;
+    }
+    .carousel__controls{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 10px;
+      pointer-events:none;
+    }
+    .carousel__btn{
+      pointer-events:auto;
+      width:42px;height:42px;border:none;
+      border-radius:999px;
+      background:rgba(0,0,0,.35);
+      color:#fff;
+      cursor:pointer;
+    }
+    .carousel__btn:hover{background:rgba(0,0,0,.55)}
+    .carousel__dots{
+      position:absolute;left:50%;bottom:12px;transform:translateX(-50%);
+      display:flex;gap:8px;
+    }
+    .dot{
+      width:9px;height:9px;border-radius:999px;
+      background:rgba(255,255,255,.5);border:0;cursor:pointer;
+    }
+    .dot.active{background:#fff}
+
+    /* ===== About (한 문장만) ===== */
+    .about-line{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:var(--radius);
+      padding:14px 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+      font-weight:800;
+      letter-spacing:-0.3px;
+    }
+
+    /* ===== Vision 3C ===== */
+    /* ✅ PC 겹침/침범 방지 */
+    .vision-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(240px, 1fr));
+      gap:22px;
+      align-items:start;
+      justify-items:center;
+    }
+    .circle{
+      position:relative;
+      aspect-ratio:1/1;
+      border-radius:999px;
+      perspective:1000px;
+      outline:none;
+      width:min(280px, 100%);
+      margin-inline:auto;
+      overflow:visible;
+    }
+    .flip{
+      position:absolute;inset:0;
+      border-radius:999px;
+      transform-style:preserve-3d;
+      transition:transform .6s ease, box-shadow .22s ease, translate .22s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+    .circle:hover .flip,
+    .circle:focus-within .flip{
+      translate: 0 -6px;
+      box-shadow: 0 18px 36px rgba(0,0,0,.12);
+      transform: rotateY(180deg);
+    }
+    .face{
+      position:absolute;inset:0;
+      border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      backface-visibility:hidden;
+      overflow:hidden;
+      text-align:center;
+      padding:18px;
+    }
+    .front h3{font-size:18px;color:#fff;font-weight:900;letter-spacing:-0.4px}
+    .front small{display:block;margin-top:6px;opacity:.9;color:#fff;font-weight:800}
+    .back{transform:rotateY(180deg);background:var(--circleBack)}
+    .back p{margin:0;font-size:14px;color:#334155;font-weight:800;line-height:1.55}
+    .front.caring{background:linear-gradient(135deg,var(--caring),#ffc93b)}
+    .front.creative{background:linear-gradient(135deg,var(--creative),#6d28d9)}
+    .front.connect{background:linear-gradient(135deg,var(--connecting),#16a34a)}
+    @media (max-width:1100px){
+      .vision-grid{grid-template-columns:repeat(2, minmax(240px, 1fr));}
+    }
+
+    /* ✅ 모바일: 작은 원 가로 스크롤 */
+    @media (max-width:900px){
+      .vision-grid{display:none;}
+
+      .vision-scroll{
+        display:grid;
+        grid-auto-flow:column;
+        grid-auto-columns: clamp(180px, 60vw, 220px);
+        gap:14px;
+        overflow-x:auto;
+        padding-bottom:6px;
+        scroll-snap-type:x mandatory;
+        -webkit-overflow-scrolling:touch;
+      }
+      .vision-scroll::-webkit-scrollbar{height:8px}
+      .vision-scroll::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:999px}
+      .vision-scroll::-webkit-scrollbar-track{background:transparent}
+
+      .vision-mini{
+        scroll-snap-align:start;
+        width:100%;
+        aspect-ratio:1/1;
+        border-radius:999px;
+        position:relative;
+        perspective:1000px;
+        margin:0;
+      }
+      .vision-mini .flip{box-shadow: 0 10px 22px rgba(0,0,0,.10)}
+      .vision-mini:hover .flip,
+      .vision-mini:focus-within .flip{
+        translate:0 -4px;
+        transform:rotateY(180deg);
+      }
+      .vision-mini .front h3{font-size:16px}
+      .vision-mini .back p{font-size:13px}
+    }
+
+    /* ===== Store ===== */
+    .prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    @media (max-width:900px){ .prod-grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:600px){ .prod-grid{grid-template-columns:1fr} }
+    .prod{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      overflow:hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+    }
+    .prod__img{
+      background:#f8fafc;
+      aspect-ratio:1/1;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .prod__img img{max-width:90%;max-height:90%;object-fit:contain}
+    .prod__meta{padding:12px}
+    .prod__name{font-weight:900}
+    .prod__price{margin-top:4px;font-weight:900;color:#111}
+    .prod__meta .btn{margin-top:10px;width:100%}
+
+    /* Characters */
+    .hscroll{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:clamp(210px, 38vw, 280px);
+      gap:14px;
+      overflow-x:auto;
+      padding-bottom:6px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .hscroll::-webkit-scrollbar{height:8px}
+    .hscroll::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:999px}
+    .hscroll::-webkit-scrollbar-track{background:transparent}
+    .hscroll > *{scroll-snap-align:start}
+    .char{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:#fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+    }
+    .char__img{background:#111;height:220px;display:flex;align-items:center;justify-content:center}
+    .char__img img{height:100%;width:100%;object-fit:contain}
+    .char__meta{padding:12px}
+    .char__name{font-weight:900}
+    .char__desc{margin-top:4px;color:var(--muted);font-size:13px}
+
+    /* Popup */
+    .popup__hero{
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:#fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+      margin-bottom:14px;
+    }
+    .popup__hero img{
+      width:100%;
+      height:clamp(260px,42vh,520px);
+      object-fit:cover;object-position:center;
+    }
+    .zone-row{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns: clamp(240px, 25vw, 320px);
+      gap:14px;
+      overflow-x:auto;
+      padding-bottom:6px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .zone-row::-webkit-scrollbar{height:8px}
+    .zone-row::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:999px}
+    .zone-row::-webkit-scrollbar-track{background:transparent}
+    .zone{
+      scroll-snap-align:start;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff;
+      padding:14px;
+      min-height:120px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.05);
+    }
+    .zone h4{font-size:16px;font-weight:900;margin:0 0 6px}
+    .zone p{color:var(--muted);font-size:14px;margin:0}
+
+    /* Story */
+    .story{
+      position:relative;
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:linear-gradient(135deg,var(--yellow),var(--yellow-2));
+      height:clamp(280px,52vh,640px);
+      box-shadow:var(--shadow);
+    }
+    .story__media{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;object-position:center;
+      filter:saturate(1.05) contrast(1.05) brightness(1.05);
+    }
+    .story__scrim{
+      position:absolute;inset:0;
+      background:linear-gradient(to right,
+        rgba(255,229,120,.86),
+        rgba(255,229,120,.58),
+        rgba(255,229,120,.20)
+      );
+    }
+    .story__content{
+      position:relative;z-index:2;
+      height:100%;
+      display:flex;flex-direction:column;
+      justify-content:center;
+      gap:12px;
+      padding:clamp(18px,3vw,28px);
+    }
+    .story__content h2{
+      font-size:clamp(20px,3vw,28px);
+      letter-spacing:-0.6px;
+      font-weight:900;
+    }
+    .story__actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    .play-overlay{
+      position:absolute;inset:0;
+      display:none;
+      align-items:center;justify-content:center;
+      z-index:3;
+    }
+    .play-overlay.show{display:flex}
+    .play-btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 16px;border-radius:999px;
+      background:rgba(17,17,17,.85);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.22);
+      font-weight:900;
+      cursor:pointer;
+      backdrop-filter:blur(6px);
+    }
+
+    /* Partners */
+    .partner-logos{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:16px;
+      align-items:center;
+    }
+    .partner-logos a{
+      height:70px;
+      display:flex;align-items:center;justify-content:center;
+      padding:8px 12px;border-radius:12px;
+    }
+    .partner-logos img{
+      max-height:100%;max-width:100%;
+      object-fit:contain;
+      filter:grayscale(100%) saturate(0) brightness(.95) opacity(.9);
+      transition:filter .22s ease, transform .22s ease;
+    }
     .partner-logos img:hover{filter:grayscale(15%) saturate(1.1) brightness(1.02) opacity(1);transform:translateY(-2px)}
-    @media (max-width:600px){.partner-logos a{height:60px}}
+    @media (max-width:600px){ .partner-logos a{height:60px} }
 
-    /* FOOTER (콤팩트) */
-    .site-footer{background:#f6f7f9;color:#111827;margin-top:28px}
-    .footer-compact{display:grid;grid-template-columns:2fr 2fr 1fr;gap:10px;padding:12px 0;border-top:1px solid #e5e7eb}
-    .footer-compact h4{margin:0 0 6px;font-size:13px;line-height:1.2;font-weight:800;color:#1f2937}
-    .footer-compact p,.footer-compact a,.footer-compact small{margin:0 0 6px;font-size:13px;line-height:1.45;color:#374151}
+    /* Footer */
+    .site-footer{background:#f6f7f9;color:#111827}
+    .footer-compact{
+      display:grid;grid-template-columns:2fr 2fr 1fr;
+      gap:10px;padding:14px 0;border-top:1px solid var(--border);
+    }
+    .footer-compact h4{font-size:13px;font-weight:900;margin:0 0 6px}
+    .footer-compact p,.footer-compact a,.footer-compact small{font-size:13px;line-height:1.45;color:#374151;margin:0 0 6px}
     .footer-compact a{text-decoration:underline}
     .sns-mini{display:flex;gap:8px;align-items:center}
-    .sns-mini a{width:26px;height:26px;border-radius:6px;background:#f9fafb;border:1px solid #e5e7eb;display:inline-flex;align-items:center;justify-content:center;transition:transform .12s ease,border-color .12s ease}
+    .sns-mini a{width:28px;height:28px;border-radius:8px;background:#fff;border:1px solid #e5e7eb;display:inline-flex;align-items:center;justify-content:center;transition:transform .12s ease,border-color .12s ease}
     .sns-mini a:hover{transform:translateY(-1px);border-color:#d1d5db}
     .sns-mini svg{width:15px;height:15px;fill:#9ca3af}
     .sns-mini a:hover svg{fill:#6b7280}
-    .legal-line{border-top:1px solid #e5e7eb;background:#eef1f5;padding:6px 0;text-align:center}
+    .legal-line{border-top:1px solid var(--border);background:#eef1f5;padding:8px 0;text-align:center}
     .legal-line small{font-size:12px;color:#6b7280}
-    @media (max-width:900px){.footer-compact{grid-template-columns:1fr}}
+    @media (max-width:900px){ .footer-compact{grid-template-columns:1fr} }
 
-    /* RESPONSIVE */
-    @media (max-width:900px){
-      .hamburger{display:block}
-      .subnav{gap:18px;overflow:auto;white-space:nowrap;padding-inline:16px}
-      section{scroll-margin-top:96px}
+    @media (prefers-reduced-motion: reduce){
+      .carousel__track{transition:none !important}
+      .btn{transition:none !important}
+      .flip{transition:none !important}
+      .circle:hover .flip,.circle:focus-within .flip{transform:none !important;translate:none !important}
     }
+    .vision-scroll{display:none;}
+.vision-mini{position:relative;}
 
-    /* ===== Popup Store: 가로 배치 스냅 ===== */
-.zone-row{
-  display: grid;
-  grid-auto-flow: column;                   /* 가로로 흐르게 */
-  grid-auto-columns: clamp(240px, 25vw, 320px); /* 카드 너비 유연하게 */
-  gap: 16px;
-  overflow-x: auto;
-  padding-bottom: 6px;
-  scroll-snap-type: x mandatory;            /* 스냅! */
-  -webkit-overflow-scrolling: touch;
-}
-.zone-row::-webkit-scrollbar{height:8px}
-.zone-row::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:999px}
-.zone-row::-webkit-scrollbar-track{background:transparent}
+/* 모바일 (0~899px) */
+@media (max-width:899px){
+  .vision-grid{display:none;}
 
-.zone{
-  scroll-snap-align: start;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:#fff;
-  padding:16px 14px;
-  display:flex; flex-direction:column;
-  min-height:120px;
-}
-.zone h4{margin:0 0 6px; font-size:16px; white-space:nowrap}
-.zone p{margin:0; color:var(--muted); font-size:14px}
+  .vision-scroll{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
 
-/* === Popup 대표 이미지 (제목 위) === */
-.popup-hero{
-  margin: 10px 0 14px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-.popup-hero img{
-  width: 100%;
-  height: clamp(260px, 42vh, 520px); /* 팝업 대표 이미지 */
-  object-fit: cover; object-position: center;
-  display: block;
+  .vision-mini{
+    flex:0 0 auto;
+    width:clamp(180px,65vw,220px);
+    aspect-ratio:1/1;
+    border-radius:999px;
+    scroll-snap-align:start;
+  }
 }
 
-/* === STORY(배너급) + 페이드 인 === */
-.story{
-  position:relative; border-radius:10px; overflow:hidden;
-  border:1px solid var(--border); background:var(--storyYellow);
-  height:clamp(280px,52vh,640px);           /* ← 히어로랑 같은 급 */
-  transform:translateY(18px); opacity:0;    /* 카드 전체 슬라이드업 */
-  transition:transform .6s ease, opacity .6s ease;
-}
-.story.raise{ transform:none; opacity:1; }
+/* 태블릿 (900~1199px) */
+@media (min-width:900px) and (max-width:1199px){
+  .vision-grid{display:none;}
 
-.story video{
-  position:absolute; inset:0; width:100%; height:100%;
-  object-fit:cover; object-position:center;
-  filter:saturate(1.05) contrast(1.05) brightness(1.05);
-}
-.story .scrim{
-  position:absolute; inset:0;
-  background:linear-gradient(to right,
-    rgba(255,229,120,.85),
-    rgba(255,229,120,.55),
-    rgba(255,229,120,.20));
-}
-.story .content{
-  position:relative; z-index:1; height:100%;
-  display:flex; flex-direction:column; justify-content:center; gap:12px;
-  padding:clamp(18px,3vw,28px);
+  .vision-scroll{
+    display:flex;
+    justify-content:center;
+    gap:22px;
+  }
+
+  .vision-mini{
+    width:220px;
+    aspect-ratio:1/1;
+    border-radius:999px;
+  }
 }
 
-/* 제목/버튼 페이드 인 */
-.fadein{ opacity:0; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease; }
-.fadein.visible{ opacity:1; transform:translateY(0); }
-
-
+/* PC (1200px~) */
+@media (min-width:1200px){
+  .vision-scroll{display:none;}
+  .vision-grid{display:grid;}
+}
   </style>
 </head>
+
 <body>
-  <!-- HEADER -->
-  <header aria-label="주요 메뉴">
-    <div class="container nav">
-      <button class="hamburger" id="hamburger" aria-label="모바일 메뉴 열기" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobile()">
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+  <!-- Header -->
+  <header class="site-header" aria-label="ARCIE 상단 메뉴">
+    <div class="container site-header__inner">
+      <button class="hamburger" id="hamburger"
+        aria-label="모바일 메뉴 열기"
+        aria-controls="mobileMenu"
+        aria-expanded="false">
+        <span class="bars" aria-hidden="true">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </span>
       </button>
-      <div class="logo"><img src="images/logo.png" alt="ARCIE 로고"></div>
+
+      <a class="site-header__logo" href="#top" aria-label="ARCIE 홈">
+        <img src="images/logo.png" alt="ARCIE 로고" />
+      </a>
+
+      <div class="site-header__right">
+        <nav class="site-header__nav" aria-label="주요 메뉴">
+          <a href="#about">소개</a>
+          <a href="#vision">비전</a>
+          <a href="#store">스토어</a>
+          <a href="#popup">팝업</a>
+          <a href="#story">소식</a>
+        </nav>
+        <a class="btn btn--sm btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">
+          스토어 ↗
+        </a>
+      </div>
     </div>
   </header>
 
-  <!-- SUBNAV -->
-  <div class="subnav-wrap" role="navigation" aria-label="하위 메뉴">
-    <nav class="container subnav">
-      <a href="#about">소개</a>
-      <a href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">온라인스토어</a>
-      <a href="#popup">팝업스토어</a>
-      <a href="#story">소식</a>
-    </nav>
-  </div>
+  <!-- Mobile Drawer -->
+  <div id="overlay" class="backdrop" aria-hidden="true"></div>
 
-  <!-- MOBILE DRAWER -->
-  <div id="overlay" class="backdrop" onclick="toggleMobile(true)" aria-hidden="true"></div>
-  <aside id="mobileMenu" class="mobile" role="dialog" aria-label="모바일 메뉴" aria-modal="true">
-    <header><button class="close-btn" aria-label="모바일 메뉴 닫기" onclick="toggleMobile(true)">×</button></header>
-    <nav>
-      <a href="#about" onclick="toggleMobile(true)">소개</a>
-      <a href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener" onclick="toggleMobile(true)">온라인스토어</a>
-      <a href="#popup" onclick="toggleMobile(true)">팝업스토어</a>
-      <a href="#story" onclick="toggleMobile(true)">소식</a>
+  <aside id="mobileMenu" class="drawer" role="dialog" aria-label="모바일 메뉴" aria-modal="true" aria-hidden="true">
+    <div class="drawer__top">
+      <div class="drawer__brand">ARCIE</div>
+      <button class="drawer__close" type="button" aria-label="모바일 메뉴 닫기" data-close>×</button>
+    </div>
+    <nav class="drawer__nav" aria-label="모바일 메뉴 링크">
+      <a href="#about" data-nav>소개</a>
+      <a href="#vision" data-nav>비전</a>
+      <a href="#store" data-nav>온라인스토어</a>
+      <a href="#popup" data-nav>팝업스토어</a>
+      <a href="#story" data-nav>소식</a>
+      <a href="#partners" data-nav>Partners</a>
     </nav>
+    <div class="drawer__foot">
+      <a class="btn btn--primary" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">
+        네이버 스마트스토어 바로가기 ↗
+      </a>
+    </div>
   </aside>
 
-  <!-- MAIN -->
-
-  <!-- 1) 이미지 슬라이드(배너) 먼저 -->
-  <section class="container" style="padding:20px 0 0">
-    <div class="carousel" id="heroCarousel" tabindex="0">
-      <div class="slides">
-        <div class="slide"><img src="images/contents1.jpg" alt="브랜드 1"></div>
-        <div class="slide"><img src="images/contents2.jpg" alt="브랜드 2"></div>
-        <div class="slide"><img src="images/contents3.jpg" alt="브랜드 3"></div>
-      </div>
-      <div class="nav"><button type="button" aria-label="이전" data-prev>‹</button><button type="button" aria-label="다음" data-next>›</button></div>
-      <div class="dots" role="tablist"><button class="dot active" data-dot="0"></button><button class="dot" data-dot="1"></button><button class="dot" data-dot="2"></button></div>
-    </div>
-  </section>
-
-  <div class="spacer-lg"></div>
-
-  <!-- 2) 소개 (발달장애… 문구) -->
-   <br>
-  <section id="about" class="container" aria-labelledby="hero-title">
-    <h1 id="hero-title">발달장애 아티스트와 함께 만드는 따뜻한 브랜드, ARCIE</h1>
-    <p class="lead">아르시는 예술과 일을 잇는 플랫폼입니다.</p>
-  </section>
-
-  <div class="spacer-lg"></div>
-
-  <!-- ARCIE 캐릭터 -->
-  <section id="characters" class="container" aria-labelledby="characters-title">
-    <h2 id="characters-title">ARCIE 캐릭터</h2>
-    <div class="arcie-carousel" id="charCarousel" tabindex="0">
-      <div class="slides">
-        <div class="slide"><img src="images/archie.jpg" alt="Archie"><div class="cap">Archie</div></div>
-        <div class="slide"><img src="images/222.jpg"   alt="Sunny"><div class="cap">Sunny</div></div>
-        <div class="slide"><img src="images/888.jpg"   alt="Cloudie"><div class="cap">Cloudie</div></div>
-        <div class="slide"><img src="images/333.jpg"   alt="Twinkie"><div class="cap">Twinkie</div></div>
-        <div class="slide"><img src="images/444.jpg"   alt="Thundy"><div class="cap">Thundy</div></div>
-        <div class="slide"><img src="images/666.jpg"   alt="Snowy"><div class="cap">Snowy</div></div>
-        <div class="slide"><img src="images/777.jpg"   alt="Whirly"><div class="cap">Whirly</div></div>
-        <div class="slide"><img src="images/555.jpg"   alt="Rainy"><div class="cap">Rainy</div></div>
-        <div class="slide"><img src="images/6cmodel.jpg" alt="Connected"><div class="cap">Connected</div></div>
-      </div>
-      <div class="nav"><button type="button" aria-label="이전 캐릭터" data-prev>‹</button><button type="button" aria-label="다음 캐릭터" data-next>›</button></div>
-      <div class="dots" role="tablist" aria-label="캐릭터 점프">
-        <button class="dot active" data-dot="0"></button><button class="dot" data-dot="1"></button>
-        <button class="dot" data-dot="2"></button><button class="dot" data-dot="3"></button>
-        <button class="dot" data-dot="4"></button><button class="dot" data-dot="5"></button>
-        <button class="dot" data-dot="6"></button><button class="dot" data-dot="7"></button>
-        <button class="dot" data-dot="8"></button>
-      </div>
-    </div>
-  </section>
-
-  <div class="spacer-lg"></div>
-<br>
-  <!-- 비전 3C -->
-  <section id="vision" class="container vision" aria-labelledby="vision-title">
-    <h2 id="vision-title">ARCIE 비전</h2>
-    <div class="vision-grid">
-      <div class="circle" tabindex="0">
-        <div class="flip">
-          <div class="face front caring"><h3>CARING<br/><small>관심과 지원</small></h3></div>
-          <div class="face back"><p>발달장애 아동과 가족에게 따뜻한 관심과 실질적 지원을 제공합니다.</p></div>
+  <main id="top">
+    <!-- HERO (문구 삭제, 슬라이드만) -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="carousel" id="heroCarousel" aria-label="ARCIE 브랜드 이미지 슬라이드" tabindex="0">
+          <div class="carousel__track">
+            <div class="carousel__slide">
+              <img class="carousel__img" src="images/contents1.jpg" alt="브랜드 이미지 1" loading="eager" decoding="async">
+            </div>
+            <div class="carousel__slide">
+              <img class="carousel__img" src="images/contents2.JPG" alt="브랜드 이미지 2" loading="lazy" decoding="async">
+            </div>
+            <div class="carousel__slide">
+              <img class="carousel__img" src="images/contents3.JPG" alt="브랜드 이미지 3" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="carousel__controls">
+            <button class="carousel__btn" type="button" aria-label="이전 슬라이드" data-prev>‹</button>
+            <button class="carousel__btn" type="button" aria-label="다음 슬라이드" data-next>›</button>
+          </div>
+          <div class="carousel__dots" role="tablist" aria-label="슬라이드 선택">
+            <button class="dot active" type="button" data-dot="0" aria-label="슬라이드 1" aria-selected="true"></button>
+            <button class="dot" type="button" data-dot="1" aria-label="슬라이드 2" aria-selected="false"></button>
+            <button class="dot" type="button" data-dot="2" aria-label="슬라이드 3" aria-selected="false"></button>
+          </div>
         </div>
       </div>
-      <div class="circle" tabindex="0">
-        <div class="flip">
-          <div class="face front creative"><h3>CREATIVE<br/><small>창의적 예술</small></h3></div>
-          <div class="face back"><p>창의적 예술 활동으로 가능성을 발견하고 성장의 무대를 엽니다.</p></div>
+    </section>
+
+    <!-- ABOUT (한 문장 통일) -->
+    <section id="about" class="section">
+      <div class="container">
+        <header class="section__head">
+          <h2>ARCIE 소개</h2>
+          <p class="lead">짧고 단단하게 한 줄로 통일</p>
+        </header>
+
+        <div class="about-line">
+          ARCIE는 발달장애 아티스트와 함께 만든 캐릭터와 굿즈로 일상 속에서 사회적 가치를 연결하는 브랜드입니다.
         </div>
       </div>
-      <div class="circle" tabindex="0">
-        <div class="flip">
-          <div class="face front connect"><h3>CONNECTING<br/><small>연결과 소통</small></h3></div>
-          <div class="face back"><p>예술을 매개로 사회적 연결을 넓히고 모두가 함께 소통합니다.</p></div>
+    </section>
+
+    <!-- VISION -->
+    <section id="vision" class="section section--alt">
+      <div class="container">
+        <header class="section__head">
+          <h2>가치와 비전</h2>
+          <p class="lead">모바일에서는 더 작게, 더 가볍게 보이도록 구성했습니다.</p>
+        </header>
+
+        <!-- Desktop -->
+        <div class="vision-grid" aria-label="ARCIE 비전 3C (데스크탑)">
+          <div class="circle" tabindex="0" aria-label="CARING">
+            <div class="flip">
+              <div class="face front caring"><div><h3>CARING</h3><small>관심과 지원</small></div></div>
+              <div class="face back"><p>발달장애 아동과 가족에게 따뜻한 관심과 실질적 지원을 제공합니다.</p></div>
+            </div>
+          </div>
+
+          <div class="circle" tabindex="0" aria-label="CREATIVE">
+            <div class="flip">
+              <div class="face front creative"><div><h3>CREATIVE</h3><small>창의적 예술</small></div></div>
+              <div class="face back"><p>창의적 예술 활동으로 가능성을 발견하고 성장의 무대를 엽니다.</p></div>
+            </div>
+          </div>
+
+          <div class="circle" tabindex="0" aria-label="CONNECTING">
+            <div class="flip">
+              <div class="face front connect"><div><h3>CONNECTING</h3><small>연결과 소통</small></div></div>
+              <div class="face back"><p>예술을 매개로 사회적 연결을 넓히고 모두가 함께 소통합니다.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile -->
+        <div class="vision-scroll" aria-label="ARCIE 비전 3C (모바일)">
+          <div class="vision-mini" tabindex="0" aria-label="CARING (모바일)">
+            <div class="flip">
+              <div class="face front caring"><div><h3>CARING</h3><small>관심과 지원</small></div></div>
+              <div class="face back"><p>따뜻한 관심과 실질적 지원</p></div>
+            </div>
+          </div>
+
+          <div class="vision-mini" tabindex="0" aria-label="CREATIVE (모바일)">
+            <div class="flip">
+              <div class="face front creative"><div><h3>CREATIVE</h3><small>창의적 예술</small></div></div>
+              <div class="face back"><p>가능성을 발견하는 창작</p></div>
+            </div>
+          </div>
+
+          <div class="vision-mini" tabindex="0" aria-label="CONNECTING (모바일)">
+            <div class="flip">
+              <div class="face front connect"><div><h3>CONNECTING</h3><small>연결과 소통</small></div></div>
+              <div class="face back"><p>사회와 이어지는 연결</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STORE -->
+    <section id="store" class="section">
+      <div class="container">
+        <!-- ✅ '전체 보러가기' 제거 -->
+        <header class="section__head">
+          <h2>온라인스토어</h2>
+          <p class="lead">대표 상품</p>
+        </header>
+
+        <div class="prod-grid" aria-label="대표 상품">
+          <article class="prod">
+            <div class="prod__img"><img src="images/prod1.jpg" alt="굿즈 A" loading="lazy" decoding="async"></div>
+            <div class="prod__meta">
+              <div class="prod__name">굿즈 A</div>
+              <div class="prod__price">₩12,000</div>
+              <a class="btn btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a>
+            </div>
+          </article>
+
+          <article class="prod">
+            <div class="prod__img"><img src="images/prod2.jpg" alt="굿즈 B" loading="lazy" decoding="async"></div>
+            <div class="prod__meta">
+              <div class="prod__name">굿즈 B</div>
+              <div class="prod__price">₩15,000</div>
+              <a class="btn btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a>
+            </div>
+          </article>
+
+          <article class="prod">
+            <div class="prod__img"><img src="images/prod1.jpg" alt="굿즈 C" loading="lazy" decoding="async"></div>
+            <div class="prod__meta">
+              <div class="prod__name">굿즈 C</div>
+              <div class="prod__price">₩—</div>
+              <a class="btn btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a>
+            </div>
+          </article>
+
+          <article class="prod">
+            <div class="prod__img"><img src="images/prod2.jpg" alt="굿즈 D" loading="lazy" decoding="async"></div>
+            <div class="prod__meta">
+              <div class="prod__name">굿즈 D</div>
+              <div class="prod__price">₩—</div>
+              <a class="btn btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a>
+            </div>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="spacer-lg"></div>
-<Br>
-  <Br><br>
-  <!-- 온라인스토어 -->
-  <section id="online" class="container" aria-labelledby="store-title">
-    <h2 id="store-title">온라인스토어</h2>
-    <div class="prod-grid" id="storeGrid">
-      <article class="prod">
-        <div class="img-wrap"><img src="images/prod1.jpg" alt="굿즈 A"></div>
-        <div class="meta"><div class="name">굿즈 A</div><div class="price">₩12,000</div>
-          <a class="btn" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a></div>
-      </article>
-      <article class="prod">
-        <div class="img-wrap"><img src="images/prod2.jpg" alt="굿즈 B"></div>
-        <div class="meta"><div class="name">굿즈 B</div><div class="price">₩15,000</div>
-          <a class="btn" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a></div>
-      </article>
-    </div>
-  </section>
+    <!-- CHARACTERS -->
+    <section id="characters" class="section section--alt">
+      <div class="container">
+        <header class="section__head">
+          <h2>ARCIE 캐릭터</h2>
+          <p class="lead">가로 스크롤 카드</p>
+        </header>
 
-  <div class="spacer-lg"></div>
-<br><br><br>
-  <!-- 팝업스토어 -->
-  <section id="popup" class="container" aria-labelledby="popup-title">
-    <h2 id="popup-title">팝업스토어 <p> <br> <strong>ARCIE Pop-up Store 어린이병원점</strong></h2>
+        <div class="hscroll" aria-label="ARCIE 캐릭터 카드">
+          <article class="char"><div class="char__img"><img src="images/archie.jpg" alt="Archie" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Archie</div><div class="char__desc">ARCIE의 중심 캐릭터</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/222.jpg" alt="Sunny" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Sunny</div><div class="char__desc">밝고 따뜻한 에너지</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/888.jpg" alt="Cloudie" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Cloudie</div><div class="char__desc">포근한 구름 친구</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/333.jpg" alt="Twinkie" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Twinkie</div><div class="char__desc">반짝이는 호기심</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/444.jpg" alt="Thundy" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Thundy</div><div class="char__desc">에너지 넘치는 친구</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/666.jpg" alt="Snowy" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Snowy</div><div class="char__desc">차분하고 시원한 무드</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/777.jpg" alt="Whirly" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Whirly</div><div class="char__desc">회오리처럼 재밌는</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/555.jpg" alt="Rainy" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Rainy</div><div class="char__desc">비처럼 촉촉한 감성</div></div></article>
+          <article class="char"><div class="char__img"><img src="images/6cmodel.jpg" alt="Connected" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Connected</div><div class="char__desc">연결의 상징</div></div></article>
+        </div>
+      </div>
+    </section>
 
-<!-- 대표 이미지 (클릭 시 링크 이동) -->
-<figure class="popup-hero">
-  <!-- TODO: 아래 href에 실제 이동할 링크(지도/상세 페이지)를 넣어주세요 -->
-  <a href="#" target="_blank" rel="noopener">
-    <img src="images/popup.jpg" alt="ARCIE 팝업스토어 전경 이미지" loading="lazy" decoding="async">
-  </a>
-</figure>
+    <!-- POPUP -->
+    <section id="popup" class="section">
+      <div class="container">
+        <header class="section__head">
+          <h2>팝업스토어</h2>
+          <p class="lead"><strong>ARCIE Pop-up Store 어린이병원점</strong></p>
+        </header>
 
-<p class="lead" style="margin:0 0 14px">
-  위치: <strong>서울특별시 어린이병원</strong> · 캐릭터와 굿즈를 직접 체험하는 공간
-</p>
+        <figure class="popup__hero">
+          <a href="#" target="_blank" rel="noopener" aria-label="팝업스토어 상세 링크">
+            <img src="images/popup.jpg" alt="ARCIE 팝업스토어 전경" loading="lazy" decoding="async">
+          </a>
+        </figure>
 
-<div class="zone-row" aria-label="팝업스토어 존 목록">
-  <article class="zone">
-    <h4>Welcome Zone</h4>
-    <p>ARCIE 캐릭터/스토리, 환영 안내</p>
-  </article>
-  <article class="zone">
-    <h4>Experience Zone</h4>
-    <p>굿즈 체험 · 인터랙티브 포토존</p>
-  </article>
-  <article class="zone">
-    <h4>Creation Zone</h4>
-    <p>아이들이 직접 참여하는 워크숍</p>
-  </article>
-  <article class="zone">
-    <h4>Impact Zone</h4>
-    <p>사회적 가치와 예술 작품 전시</p>
-  </article>
-</div>
-  </section>
+        <p class="lead" style="margin-bottom:14px">위치: <strong>서울특별시 어린이병원</strong></p>
 
-  <div class="spacer-lg"></div>
-<br><br><br>
-  <!-- 소식(스토리) - 노랑 CTA, “영상으로” 문구 제거 -->
-<!-- STORY (배너급 영상 섹션) -->
-<section id="story" class="container" aria-labelledby="story-title" style="padding-bottom:12px">
-  <div class="story" id="storyCard">
-    <video id="storyVideo"
-      muted playsinline webkit-playsinline autoplay loop preload="metadata"
-      poster="images/contents1.jpg"
-      data-fallback="images/contents1.jpg">
-      <source src="images/story.mp4" type="video/mp4">
-      <!-- 있으면 유지, 없으면 이 줄 삭제 -->
-      <source src="images/story.webm" type="video/webm">
-    </video>
-    <div class="scrim"></div>
-    <div class="content">
-      <h2 id="story-title" class="fadein">ARCIE의 이야기가 궁금하다면?</h2>
-      <a class="cta fadein" id="storyCta" href="#" target="_blank" rel="noopener">바로가기 ↗</a>
-    </div>
-  </div>
-</section>
+        <div class="zone-row" aria-label="팝업스토어 존 목록">
+          <article class="zone"><h4>Welcome Zone</h4><p>ARCIE 캐릭터/스토리, 환영 안내</p></article>
+          <article class="zone"><h4>Experience Zone</h4><p>굿즈 체험 · 인터랙티브 포토존</p></article>
+          <article class="zone"><h4>Creation Zone</h4><p>아이들이 직접 참여하는 워크숍</p></article>
+          <article class="zone"><h4>Impact Zone</h4><p>사회적 가치와 예술 작품 전시</p></article>
+        </div>
+      </div>
+    </section>
 
-  <div class="spacer-lg"></div>
+    <!-- STORY -->
+    <section id="story" class="section section--alt">
+      <div class="container">
+        <header class="section__head">
+          <h2>소식</h2>
+          <p class="lead">영상은 자동 재생 시도, 막히면 버튼으로 즉시 재생</p>
+        </header>
 
-  <!-- 파트너 -->
-  <section id="partners" class="container partners" aria-labelledby="partners-title">
-    <h2 id="partners-title">Partners</h2>
-    <p class="lead">아르시와 함께하는 파트너</p>
-    <div class="partner-logos">
-      <a href="#" aria-label="서울특별시 어린이병원"><img src="images/hosp_logo.png" alt="서울특별시 어린이병원 로고"></a>
-      <a href="#" aria-label="LOT Vacuum"><img src="images/vaccum.png" alt="LOT Vacuum 로고"></a>
-      <a href="#" aria-label="LOT TS"><img src="images/tes.png" alt="LOT TS 로고"></a>
-      <a href="#" aria-label="LOT CES"><img src="images/ces.png" alt="LOT CES 로고"></a>
-      <a href="#" aria-label="ITEK"><img src="images/itek.png" alt="ITEK 로고"></a>
-      <a href="#" aria-label="오뚜기"><img src="images/ottuki.png" alt="오뚜기 로고"></a>
-      <a href="#" aria-label="조흥"><img src="images/joheng.png" alt="조흥 로고"></a>
-    </div>
-  </section>
+        <div class="story" id="storyCard">
+          <img class="story__media" id="storyFallback" src="images/contents1.jpg" alt="ARCIE 스토리 배경" loading="lazy" decoding="async">
+          <video class="story__media" id="storyVideo"
+            muted playsinline webkit-playsinline autoplay loop preload="metadata"
+            poster="images/contents1.jpg">
+            <source src="images/story.mp4" type="video/mp4">
+            <source src="images/story.webm" type="video/webm">
+          </video>
+
+          <div class="story__scrim"></div>
+
+          <div class="play-overlay" id="playOverlay" aria-hidden="true">
+            <button class="play-btn" type="button" id="playBtn">▶ 재생</button>
+          </div>
+
+          <div class="story__content">
+            <h2>ARCIE의 이야기가 궁금하다면?</h2>
+            <div class="story__actions">
+              <a class="btn btn--dark" href="#" target="_blank" rel="noopener">바로가기 ↗</a>
+              <a class="btn" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">스토어 ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNERS -->
+    <section id="partners" class="section">
+      <div class="container">
+        <header class="section__head">
+          <h2>Partners</h2>
+          <p class="lead">아르시와 함께하는 파트너</p>
+        </header>
+
+        <div class="partner-logos">
+          <a href="#" aria-label="서울특별시 어린이병원"><img src="images/hosp_logo.png" alt="서울특별시 어린이병원 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="LOT Vacuum"><img src="images/vaccum.png" alt="LOT Vacuum 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="LOT TS"><img src="images/tes.png" alt="LOT TS 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="LOT CES"><img src="images/ces.png" alt="LOT CES 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="ITEK"><img src="images/itek.png" alt="ITEK 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="오뚜기"><img src="images/ottuki.png" alt="오뚜기 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="조흥"><img src="images/joheng.png" alt="조흥 로고" loading="lazy" decoding="async"></a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer class="site-footer" role="contentinfo">
@@ -456,12 +876,14 @@
         <p><strong>이메일</strong> <a href="mailto:mulgogienter@gmail.com">mulgogienter@gmail.com</a></p>
         <p>평일 09:00 ~ 18:00 (점심 12:00 ~ 13:00) · 토/일/공휴일 휴무</p>
       </section>
+
       <section aria-labelledby="biz-title">
         <h4 id="biz-title">사업자정보</h4>
         <p>상호명: (주)물고기엔터</p>
         <p>대표자: 채종성</p>
         <p>사업자 등록번호: 426-86-03616</p>
       </section>
+
       <section aria-labelledby="sns-title">
         <h4 id="sns-title">SNS</h4>
         <div class="sns-mini">
@@ -477,147 +899,141 @@
         </div>
       </section>
     </div>
-    <div class="legal-line"><div class="container"><small>© <span id="y"></span> ARCIE. All Rights Reserved.</small></div></div>
+
+    <div class="legal-line">
+      <div class="container">
+        <small>© <span id="y"></span> ARCIE. All Rights Reserved.</small>
+      </div>
+    </div>
   </footer>
 
-  <!-- SCRIPTS -->
   <script>
-    // Drawer
-    function openDrawer(){const d=document.getElementById('mobileMenu'),o=document.getElementById('overlay'),t=document.getElementById('hamburger');d.classList.add('open');o.classList.add('show');t.setAttribute('aria-expanded','true');document.body.style.overflow='hidden'}
-    function closeDrawer(){const d=document.getElementById('mobileMenu'),o=document.getElementById('overlay'),t=document.getElementById('hamburger');d.classList.remove('open');o.classList.remove('show');t.setAttribute('aria-expanded','false');document.body.style.overflow=''}
-    function toggleMobile(forceClose){const d=document.getElementById('mobileMenu');const open=d.classList.contains('open');(forceClose||open)?closeDrawer():openDrawer()}
-    window.addEventListener('keydown',e=>{const d=document.getElementById('mobileMenu');if(e.key==='Escape'&&d.classList.contains('open')) closeDrawer()});
-
     // Year
     (function(){const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear();})();
 
-    // Generic carousel
-    function makeCarousel(rootId,count,interval){
-      const root=document.getElementById(rootId); if(!root) return;
-      const wrap=root.querySelector('.slides'); const prev=root.querySelector('[data-prev]'); const next=root.querySelector('[data-next]');
-      const dots=[...root.querySelectorAll('.dot')]; let i=0, auto, sx=0, dx=0;
-      const go=n=>{i=(n+count)%count;wrap.style.transform='translateX('+(-i*100)+'%)';dots.forEach((d,k)=>d.classList.toggle('active',k===i));restart()};
-      const restart=()=>{clearInterval(auto);auto=setInterval(()=>go(i+1),interval)};
-      prev && prev.addEventListener('click',()=>go(i-1));
-      next && next.addEventListener('click',()=>go(i+1));
-      dots.forEach((d,idx)=>d.addEventListener('click',()=>go(idx)));
-      wrap.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dx=0;clearInterval(auto)},{passive:true});
-      wrap.addEventListener('touchmove',e=>{dx=e.touches[0].clientX-sx},{passive:true});
-      wrap.addEventListener('touchend',()=>{Math.abs(dx)>40?go(i+(dx<0?1:-1)):restart()});
+    // Drawer (햄버거 동작) - 안정형
+    (function(){
+      const openBtn = document.getElementById('hamburger');
+      const drawer = document.getElementById('mobileMenu');
+      const overlay = document.getElementById('overlay');
+      const closeBtn = drawer.querySelector('[data-close]');
+      const navLinks = drawer.querySelectorAll('[data-nav]');
+      let lastFocus = null;
+
+      const isOpen = () => drawer.classList.contains('open');
+
+      function openDrawer(){
+        if(isOpen()) return;
+        lastFocus = document.activeElement;
+
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden','false');
+        openBtn.setAttribute('aria-expanded','true');
+        overlay.classList.add('show');
+
+        document.body.style.overflow='hidden';
+        closeBtn && closeBtn.focus();
+      }
+      function closeDrawer(){
+        if(!isOpen()) return;
+
+        drawer.classList.remove('open');
+        drawer.setAttribute('aria-hidden','true');
+        openBtn.setAttribute('aria-expanded','false');
+        overlay.classList.remove('show');
+
+        document.body.style.overflow='';
+        if(lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+      }
+
+      openBtn.addEventListener('click', ()=> isOpen() ? closeDrawer() : openDrawer());
+      overlay.addEventListener('click', closeDrawer);
+      closeBtn && closeBtn.addEventListener('click', closeDrawer);
+      navLinks.forEach(a => a.addEventListener('click', closeDrawer));
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
+    })();
+
+    // Carousel
+    function makeCarousel(rootId, count, intervalMs){
+      const root = document.getElementById(rootId);
+      if(!root) return;
+
+      const track = root.querySelector('.carousel__track');
+      const prev = root.querySelector('[data-prev]');
+      const next = root.querySelector('[data-next]');
+      const dots = [...root.querySelectorAll('.dot')];
+
+      let i = 0;
+      let auto = null;
+      let sx = 0, dx = 0;
+
+      function syncDots(){
+        dots.forEach((d, idx)=>{
+          const active = idx === i;
+          d.classList.toggle('active', active);
+          d.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+      }
+      function go(n){
+        i = (n + count) % count;
+        track.style.transform = 'translateX(' + (-i * 100) + '%)';
+        syncDots();
+        restart();
+      }
+      function restart(){
+        clearInterval(auto);
+        auto = setInterval(()=>go(i+1), intervalMs);
+      }
+
+      prev && prev.addEventListener('click', ()=>go(i-1));
+      next && next.addEventListener('click', ()=>go(i+1));
+      dots.forEach((d, idx)=> d.addEventListener('click', ()=>go(idx)));
+
+      track.addEventListener('touchstart', (e)=>{ sx = e.touches[0].clientX; dx = 0; clearInterval(auto); }, {passive:true});
+      track.addEventListener('touchmove', (e)=>{ dx = e.touches[0].clientX - sx; }, {passive:true});
+      track.addEventListener('touchend', ()=>{ if(Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1)); else restart(); });
+
+      root.addEventListener('keydown', (e)=>{ if(e.key === 'ArrowLeft') go(i-1); if(e.key === 'ArrowRight') go(i+1); });
+
+      syncDots();
       restart();
     }
-    makeCarousel('heroCarousel',3,5000);
+    makeCarousel('heroCarousel', 3, 5000);
 
-    // Character carousel + 배경색 자동
+    // Story Video: autoplay try + fallback play button
     (function(){
-      const root=document.getElementById('charCarousel'); if(!root) return;
-      const wrap=root.querySelector('.slides'); const prev=root.querySelector('[data-prev]'); const next=root.querySelector('[data-next]');
-      const dots=[...root.querySelectorAll('.dot')]; const slides=[...wrap.children];
-      let i=0, auto, sx=0, dx=0;
-      function dominantColor(img){
-        const c=document.createElement('canvas'); const ctx=c.getContext('2d',{willReadFrequently:true});
-        const w=12,h=12; c.width=w; c.height=h;
+      const v = document.getElementById('storyVideo');
+      const img = document.getElementById('storyFallback');
+      const overlay = document.getElementById('playOverlay');
+      const btn = document.getElementById('playBtn');
+      if(!v || !img || !overlay || !btn) return;
+
+      const showPlay = () => { overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false'); };
+      const hidePlay = () => { overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); };
+
+      const tryAutoplay = async () => {
         try{
-          ctx.drawImage(img,0,0,w,h);
-          const data=ctx.getImageData(0,0,w,h).data;
-          let r=0,g=0,b=0,count=0;
-          for(let p=0;p<data.length;p+=4){r+=data[p];g+=data[p+1];b+=data[p+2];count++;}
-          r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count);
-          const lum=0.2126*r+0.7152*g+0.0722*b;
-          if(lum<40) return 'rgb(245,247,250)';
-          return `rgb(${r},${g},${b})`;
-        }catch(e){ return 'rgb(245,247,250)'; }
-      }
-      slides.forEach(sl=>{
-        const img=sl.querySelector('img');
-        const apply=()=>{ sl.style.background=dominantColor(img); };
-        if(img.complete) apply(); else img.addEventListener('load',apply,{once:true});
-        img.addEventListener('error',()=>{sl.style.background='rgb(245,247,250)';});
-      });
-      function go(n){i=(n+slides.length)%slides.length;wrap.style.transform='translateX('+(-i*100)+'%)';dots.forEach((d,k)=>d.classList.toggle('active',k===i));restart()}
-      function restart(){clearInterval(auto);auto=setInterval(()=>go(i+1),4000)}
-      prev && prev.addEventListener('click',()=>go(i-1));
-      next && next.addEventListener('click',()=>go(i+1));
-      dots.forEach((d,idx)=>d.addEventListener('click',()=>go(idx)));
-      wrap.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dx=0;clearInterval(auto)},{passive:true});
-      wrap.addEventListener('touchmove',e=>{dx=e.touches[0].clientX-sx},{passive:true});
-      wrap.addEventListener('touchend',()=>{Math.abs(dx)>40?go(i+(dx<0?1:-1)):restart()});
-      restart();
-    })();
+          await v.play();
+          img.style.display = 'none';
+          hidePlay();
+        }catch(e){
+          showPlay();
+        }
+      };
 
-    // 온라인스토어 등장 모션
-    (function(){
-      const els=[...document.querySelectorAll('#storeGrid .prod')];
-      const io=new IntersectionObserver((entries)=>{
-        entries.forEach((en,i)=>{
-          if(en.isIntersecting){
-            en.target.style.transitionDelay=(i*90)+'ms';
-            en.target.classList.add('reveal');
-            io.unobserve(en.target);
-          }
-        });
-      },{threshold:0.15});
-      els.forEach(el=>io.observe(el));
-    })();
-
-    // 스토리(노랑 카드) 등장 모션
-    (function(){
-      const box=document.getElementById('storyCard'); if(!box) return;
-      const io=new IntersectionObserver((entries)=>{
-        entries.forEach(en=>{
-          if(en.isIntersecting){ box.classList.add('raise'); io.unobserve(box); }
-        });
-      },{threshold:0.2});
-      io.observe(box);
-    })();
-
-  // STORY: 제목/버튼 페이드 인
-  (function(){
-    const items = [document.getElementById('story-title'), document.getElementById('storyCta')].filter(Boolean);
-    if(!items.length) return;
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(en=>{
-        if(en.isIntersecting){
-          en.target.classList.add('visible');
-          io.unobserve(en.target);
+      btn.addEventListener('click', async ()=>{
+        try{
+          await v.play();
+          img.style.display = 'none';
+          hidePlay();
+        }catch(e){
+          showPlay();
         }
       });
-    }, {threshold: 0.25});
-    items.forEach(el=> io.observe(el));
-  })();
-(function(){
-  const v = document.getElementById('storyVideo');
-  if(!v) return;
 
-  const fallbackSrc = v.getAttribute('data-fallback') || v.getAttribute('poster');
-  const swapToImage = () => {
-    if (!fallbackSrc) return;
-    const img = new Image();
-    img.src = fallbackSrc;
-    img.alt = "ARCIE 스토리";
-    img.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;";
-    v.replaceWith(img);
-  };
-
-  // iOS 등에서 autoplay 테스트
-  const tryPlay = async () => {
-    try {
-      await v.play(); // 성공 시 그대로 유지
-    } catch (e) {
-      swapToImage();  // 실패하면 즉시 이미지로 전환
-    }
-  };
-
-  if (v.readyState >= 2) tryPlay();
-  else v.addEventListener('loadeddata', tryPlay, {once:true});
-
-  // 스크롤로 화면에 들어왔을 때 한 번 더 시도(가끔 첫 로드 실패 대비)
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(en=>{ if(en.isIntersecting){ tryPlay(); io.disconnect(); }});
-  }, {threshold: .35});
-  io.observe(v);
-})();
+      if(v.readyState >= 2) tryAutoplay();
+      else v.addEventListener('loadeddata', tryAutoplay, {once:true});
+    })();
   </script>
 </body>
 </html>
-
