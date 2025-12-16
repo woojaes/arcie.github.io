@@ -74,7 +74,11 @@
     }
     .btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.08)}
     .btn--primary{background:var(--brand);border-color:transparent;color:#fff}
-    .btn--dark{background:#111;border-color:transparent;color:#fff}
+.btn--dark{
+  background:rgba(0,71,255,0.9);  /* 다크 그레이 */
+  border-color:transparent;
+  color:#fff;
+}
     .btn--sm{padding:8px 12px;font-size:13px}
 
     /* ===== Header ===== */
@@ -621,13 +625,13 @@
         <div class="carousel" id="heroCarousel" aria-label="ARCIE 브랜드 이미지 슬라이드" tabindex="0">
           <div class="carousel__track">
             <div class="carousel__slide">
-              <img class="carousel__img" src="images/contents1.jpg" alt="브랜드 이미지 1" loading="eager" decoding="async">
+              <img class="carousel__img" src="images/contents1.jpeg" alt="브랜드 이미지 1" loading="eager" decoding="async">
             </div>
             <div class="carousel__slide">
-              <img class="carousel__img" src="images/contents2.JPG" alt="브랜드 이미지 2" loading="lazy" decoding="async">
+              <img class="carousel__img" src="images/contents2.jpeg" alt="브랜드 이미지 2" loading="lazy" decoding="async">
             </div>
             <div class="carousel__slide">
-              <img class="carousel__img" src="images/contents3.JPG" alt="브랜드 이미지 3" loading="lazy" decoding="async">
+              <img class="carousel__img" src="images/contents3.jpeg" alt="브랜드 이미지 3" loading="lazy" decoding="async">
             </div>
           </div>
           <div class="carousel__controls">
@@ -648,7 +652,7 @@
       <div class="container">
         <header class="section__head">
           <h2>ARCIE 소개</h2>
-          <p class="lead">짧고 단단하게 한 줄로 통일</p>
+        
         </header>
 
         <div class="about-line">
@@ -662,7 +666,7 @@
       <div class="container">
         <header class="section__head">
           <h2>가치와 비전</h2>
-          <p class="lead">모바일에서는 더 작게, 더 가볍게 보이도록 구성했습니다.</p>
+          <p class="lead">아르시는 3C 모델을 지향합니다</p>
         </header>
 
         <!-- Desktop -->
@@ -745,19 +749,19 @@
           </article>
 
           <article class="prod">
-            <div class="prod__img"><img src="images/prod1.jpg" alt="굿즈 C" loading="lazy" decoding="async"></div>
+            <div class="prod__img"><img src="images/prod3.jpg" alt="굿즈 C" loading="lazy" decoding="async"></div>
             <div class="prod__meta">
               <div class="prod__name">굿즈 C</div>
-              <div class="prod__price">₩—</div>
+              <div class="prod__price">₩30,000</div>
               <a class="btn btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a>
             </div>
           </article>
 
           <article class="prod">
-            <div class="prod__img"><img src="images/prod2.jpg" alt="굿즈 D" loading="lazy" decoding="async"></div>
+            <div class="prod__img"><img src="images/prod4.jpg" alt="굿즈 D" loading="lazy" decoding="async"></div>
             <div class="prod__meta">
               <div class="prod__name">굿즈 D</div>
-              <div class="prod__price">₩—</div>
+              <div class="prod__price">₩25,000</div>
               <a class="btn btn--dark" href="https://smartstore.naver.com/arcie" target="_blank" rel="noopener">구매하기 ↗</a>
             </div>
           </article>
@@ -782,8 +786,6 @@
           <article class="char"><div class="char__img"><img src="images/666.jpg" alt="Snowy" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Snowy</div><div class="char__desc">차분하고 시원한 무드</div></div></article>
           <article class="char"><div class="char__img"><img src="images/777.jpg" alt="Whirly" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Whirly</div><div class="char__desc">회오리처럼 재밌는</div></div></article>
           <article class="char"><div class="char__img"><img src="images/555.jpg" alt="Rainy" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Rainy</div><div class="char__desc">비처럼 촉촉한 감성</div></div></article>
-          <article class="char"><div class="char__img"><img src="images/6cmodel.jpg" alt="Connected" loading="lazy" decoding="async"></div><div class="char__meta"><div class="char__name">Connected</div><div class="char__desc">연결의 상징</div></div></article>
-        </div>
       </div>
     </section>
 
@@ -797,11 +799,11 @@
 
         <figure class="popup__hero">
           <a href="#" target="_blank" rel="noopener" aria-label="팝업스토어 상세 링크">
-            <img src="images/popup.jpg" alt="ARCIE 팝업스토어 전경" loading="lazy" decoding="async">
+            <img src="images/contents3.jpeg" alt="ARCIE 팝업스토어 전경" loading="lazy" decoding="async">
           </a>
         </figure>
 
-        <p class="lead" style="margin-bottom:14px">위치: <strong>서울특별시 어린이병원</strong></p>
+        <p class="lead" style="margin-bottom:14px">위치: <strong>서울특별시 어린이병원 발달센터 B1</strong></p>
 
         <div class="zone-row" aria-label="팝업스토어 존 목록">
           <article class="zone"><h4>Welcome Zone</h4><p>ARCIE 캐릭터/스토리, 환영 안내</p></article>
@@ -817,7 +819,7 @@
       <div class="container">
         <header class="section__head">
           <h2>소식</h2>
-          <p class="lead">영상은 자동 재생 시도, 막히면 버튼으로 즉시 재생</p>
+          <p class="lead">ARCIE, 발달장애 예술가들의 사회 진출 커뮤니티</p>
         </header>
 
         <div class="story" id="storyCard">
@@ -825,8 +827,8 @@
           <video class="story__media" id="storyVideo"
             muted playsinline webkit-playsinline autoplay loop preload="metadata"
             poster="images/contents1.jpg">
-            <source src="images/story.mp4" type="video/mp4">
-            <source src="images/story.webm" type="video/webm">
+            <source src="images/video.mov" type="video/mov">
+            <source src="images/video.mov" type="video/webm">
           </video>
 
           <div class="story__scrim"></div>
@@ -862,7 +864,10 @@
           <a href="#" aria-label="ITEK"><img src="images/itek.png" alt="ITEK 로고" loading="lazy" decoding="async"></a>
           <a href="#" aria-label="오뚜기"><img src="images/ottuki.png" alt="오뚜기 로고" loading="lazy" decoding="async"></a>
           <a href="#" aria-label="조흥"><img src="images/joheng.png" alt="조흥 로고" loading="lazy" decoding="async"></a>
-        </div>
+          <a href="#" aria-label="enob"><img src="images/enob.png" alt="enob 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="iqcia"><img src="images/iqvia.png" alt="iqvia 로고" loading="lazy" decoding="async"></a>
+          <a href="#" aria-label="homeplus"><img src="images/homeplus.png" alt="홈플러스 로고" loading="lazy" decoding="async"></a>
+          </div>
       </div>
     </section>
   </main>
