@@ -96,10 +96,12 @@ overflow:hidden;
 
 .hero video{
 position:absolute;
-inset:0;
+top:0;
+left:0;
 width:100%;
 height:100%;
 object-fit:cover;
+z-index:-1;
 }
 
 .hero::after{
@@ -205,13 +207,18 @@ font-weight:400;
 margin-top:6px;
 }
 
-.vA{background:#2563eb;top:195px;left:195px;}
-.vR{background:#7c3aed;top:0;left:195px;}
-.vE{background:#22c55e;top:100px;left:390px;}
-.vF{background:#f59e0b;top:320px;left:390px;}
-.vI{background:#ef4444;top:390px;left:195px;}
-.vS{background:#06b6d4;top:320px;left:0;}
-.vH{background:#6366f1;top:100px;left:0;}
+.center{
+background:#111;
+top:195px;
+left:195px;
+}
+
+.v1{background:#2563eb;top:0;left:195px;}
+.v2{background:#7c3aed;top:100px;left:390px;}
+.v3{background:#22c55e;top:320px;left:390px;}
+.v4{background:#f59e0b;top:390px;left:195px;}
+.v5{background:#ef4444;top:320px;left:0;}
+.v6{background:#06b6d4;top:100px;left:0;}
 
 .value:hover{
 transform:scale(1.08);
@@ -221,24 +228,23 @@ box-shadow:0 15px 35px rgba(0,0,0,.2);
 
 /* ARTISTS */
 
-.artist-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:35px;
+.artist-slider{
+overflow:hidden;
 margin-top:70px;
 }
 
+.artist-track{
+display:flex;
+gap:35px;
+animation:artistScroll 20s linear infinite;
+}
+
 .artist{
+min-width:260px;
 border-radius:var(--radius);
 overflow:hidden;
 border:1px solid #eee;
 background:white;
-transition:.3s;
-}
-
-.artist:hover{
-transform:translateY(-6px);
-box-shadow:0 20px 40px rgba(0,0,0,.12);
 }
 
 .artist img{
@@ -258,6 +264,11 @@ display:block;
 font-size:13px;
 color:var(--muted);
 font-weight:400;
+}
+
+@keyframes artistScroll{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
 }
 
 
@@ -353,8 +364,6 @@ font-size:10px;
 display:none;
 }
 
-/* 모바일 flip 제거 */
-
 .flipper{
 transform:none !important;
 }
@@ -388,7 +397,7 @@ position:relative;
 
 <section class="front hero">
 
-<video autoplay muted loop playsinline>
+<video autoplay muted loop playsinline webkit-playsinline preload="auto">
 <source src="images/video.mp4" type="video/mp4">
 </video>
 
@@ -437,13 +446,14 @@ Art • Respect • Expression • Future • Inclusion • Story • Harmony
 
 <div class="values">
 
-<div class="value vA">Art<span>예술을 통해 재능을 발견하고 표현</span></div>
-<div class="value vR">Respect<span>다름을 존중하고 가능성을 인정</span></div>
-<div class="value vE">Expression<span>자기표현으로 세상과 연결</span></div>
-<div class="value vF">Future<span>예술로 새로운 미래 창조</span></div>
-<div class="value vI">Inclusion<span>장애와 비장애의 경계 없는 사회</span></div>
-<div class="value vS">Story<span>아티스트의 삶을 기록</span></div>
-<div class="value vH">Harmony<span>다양성이 만드는 예술 공동체</span></div>
+<div class="value center">AREFISH</div>
+
+<div class="value v1">Art<span>예술로 재능 발견</span></div>
+<div class="value v2">Respect<span>다름을 존중</span></div>
+<div class="value v3">Expression<span>자기 표현</span></div>
+<div class="value v4">Future<span>새로운 미래</span></div>
+<div class="value v5">Inclusion<span>경계 없는 사회</span></div>
+<div class="value v6">Story<span>아티스트 기록</span></div>
 
 </div>
 
@@ -459,11 +469,13 @@ Art • Respect • Expression • Future • Inclusion • Story • Harmony
 
 <h2>AREFISH Artists</h2>
 
-<div class="artist-grid">
+<div class="artist-slider">
+
+<div class="artist-track">
 
 <div class="artist">
 <img src="images/공민배.jpg">
-<p>공민배<span>바이올리니스트 · 별별하모니아 오케스트라 악장</span></p>
+<p>공민배<span>바이올리니스트</span></p>
 </div>
 
 <div class="artist">
@@ -474,6 +486,18 @@ Art • Respect • Expression • Future • Inclusion • Story • Harmony
 <div class="artist">
 <img src="images/전문기.jpg">
 <p>전문기<span>국악 신동</span></p>
+</div>
+
+<div class="artist">
+<img src="images/공민배.jpg">
+<p>공민배<span>바이올리니스트</span></p>
+</div>
+
+<div class="artist">
+<img src="images/이상우.jpg">
+<p>이상우<span>피아니스트</span></p>
+</div>
+
 </div>
 
 </div>
