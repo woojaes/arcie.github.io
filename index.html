@@ -183,6 +183,9 @@ position:relative;
 width:520px;
 height:520px;
 margin:80px auto;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .value{
@@ -209,16 +212,17 @@ margin-top:6px;
 
 .center{
 background:#111;
-top:195px;
-left:195px;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 }
 
-.v1{background:#2563eb;top:0;left:195px;}
-.v2{background:#7c3aed;top:100px;left:390px;}
-.v3{background:#22c55e;top:320px;left:390px;}
-.v4{background:#f59e0b;top:390px;left:195px;}
-.v5{background:#ef4444;top:320px;left:0;}
-.v6{background:#06b6d4;top:100px;left:0;}
+.v1{background:#2563eb;top:0;left:50%;transform:translateX(-50%);}
+.v2{background:#7c3aed;top:25%;right:0;}
+.v3{background:#22c55e;bottom:25%;right:0;}
+.v4{background:#f59e0b;bottom:0;left:50%;transform:translateX(-50%);}
+.v5{background:#ef4444;bottom:25%;left:0;}
+.v6{background:#06b6d4;top:25%;left:0;}
 
 .value:hover{
 transform:scale(1.08);
@@ -389,15 +393,12 @@ position:relative;
 
 <body>
 
-
 <div class="flip-container" id="flipPage">
-
 <div class="flipper">
-
 
 <section class="front hero">
 
-<video autoplay muted loop playsinline webkit-playsinline preload="auto">
+<video id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
 <source src="images/video.mp4" type="video/mp4">
 </video>
 
@@ -412,18 +413,12 @@ Art • Respect • Expression • Future • Inclusion • Story • Harmony
 <div class="enter-btn" onclick="flipPage()">ENTER</div>
 
 </div>
-
 </section>
-
-
 
 <div class="back">
 
-
 <header>
-
 <div class="container header-inner">
-
 <div class="logo">AREFISH</div>
 
 <nav>
@@ -433,13 +428,9 @@ Art • Respect • Expression • Future • Inclusion • Story • Harmony
 </nav>
 
 </div>
-
 </header>
 
-
-
 <section id="value">
-
 <div class="container">
 
 <h2 style="text-align:center;">Core Value</h2>
@@ -458,130 +449,39 @@ Art • Respect • Expression • Future • Inclusion • Story • Harmony
 </div>
 
 </div>
-
 </section>
 
-
-
-<section id="artists">
-
-<div class="container">
-
-<h2>AREFISH Artists</h2>
-
-<div class="artist-slider">
-
-<div class="artist-track">
-
-<div class="artist">
-<img src="images/공민배.jpg">
-<p>공민배<span>바이올리니스트</span></p>
-</div>
-
-<div class="artist">
-<img src="images/이상우.jpg">
-<p>이상우<span>피아니스트</span></p>
-</div>
-
-<div class="artist">
-<img src="images/전문기.jpg">
-<p>전문기<span>국악 신동</span></p>
-</div>
-
-<div class="artist">
-<img src="images/공민배.jpg">
-<p>공민배<span>바이올리니스트</span></p>
-</div>
-
-<div class="artist">
-<img src="images/이상우.jpg">
-<p>이상우<span>피아니스트</span></p>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section id="partners">
-
-<div class="container">
-
-<h2>Partners</h2>
-
-<div class="partner-wrap">
-
-<div class="partner-track">
-
-<img src="images/hosp_logo.png">
-<img src="images/GCOO_LOGO.png">
-<img src="images/h1_01.png">
-<img src="images/HDC랩스_LOGO.png">
-<img src="images/homeplus.png">
-<img src="images/iqvia.png">
-<img src="images/ottuki.png">
-
-<img src="images/hosp_logo.png">
-<img src="images/GCOO_LOGO.png">
-<img src="images/h1_01.png">
-<img src="images/HDC랩스_LOGO.png">
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="store">
-
-<div class="container">
-
-<h2>AREFISH Store</h2>
-
-<p>발달장애 아티스트와 함께 만든 굿즈를 만나보세요</p>
-
-<a class="store-btn"
-href="https://smartstore.naver.com/arcie"
-target="_blank">
-스마트스토어 바로가기
-</a>
-
-</div>
-
-</section>
-
-
-
-<footer>
-
-<p>상호명: (주)물고기엔터</p>
-<p>대표자: 채종성</p>
-<p>사업자 등록번호: 426-86-03616</p>
-
-<p style="margin-top:12px;">© 2026 AREFISH</p>
-
-</footer>
-
-
 </div>
 </div>
 </div>
-
 
 <script>
 
 function flipPage(){
 document.getElementById("flipPage").classList.add("flip");
 }
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const video=document.getElementById("heroVideo");
+
+if(video){
+
+video.muted=true;
+
+let playPromise=video.play();
+
+if(playPromise!==undefined){
+
+playPromise.catch(()=>{
+video.play();
+});
+
+}
+
+}
+
+});
 
 </script>
 
