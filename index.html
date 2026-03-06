@@ -11,16 +11,12 @@
 
 :root{
 --brand:#0047ff;
---radius:18px;
 --text:#111;
 --muted:#6b7280;
+--radius:18px;
 }
 
 *{box-sizing:border-box}
-
-html{
-scroll-behavior:smooth;
-}
 
 body{
 margin:0;
@@ -31,7 +27,7 @@ line-height:1.6;
 }
 
 .container{
-width:min(1100px,92%);
+width:min(1150px,92%);
 margin:auto;
 }
 
@@ -45,52 +41,54 @@ letter-spacing:-0.5px;
 
 a{text-decoration:none}
 
-/* HEADER */
 
-header{
-position:fixed;
-top:0;
+/* FLIP */
+
+.flip-container{
+perspective:1500px;
 width:100%;
-z-index:100;
-transition:transform .35s ease;
-background:rgba(0,0,0,.25);
-backdrop-filter:blur(10px);
+height:100vh;
+overflow:hidden;
 }
 
-header.hide{
-transform:translateY(-100%);
+.flipper{
+width:100%;
+height:100%;
+transform-style:preserve-3d;
+transition:transform 1.2s cubic-bezier(.65,.05,.36,1);
+position:relative;
 }
 
-.header-inner{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:22px 0;
+.flip-container.flip .flipper{
+transform:rotateY(180deg);
 }
 
-.logo{
-font-size:22px;
-font-weight:800;
-color:white;
+.front,.back{
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+backface-visibility:hidden;
 }
 
-nav a{
-margin-left:22px;
-color:white;
-font-weight:600;
-font-size:14px;
+.back{
+transform:rotateY(180deg);
+overflow:auto;
+background:white;
 }
+
 
 /* HERO */
 
 .hero{
 height:100vh;
-position:relative;
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
 color:white;
+position:relative;
 overflow:hidden;
 }
 
@@ -106,141 +104,147 @@ object-fit:cover;
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.6));
+background:linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.7));
 }
 
 .hero-content{
 position:relative;
 z-index:2;
 max-width:700px;
-animation:fadeUp 1s ease;
 }
 
 .hero h1{
-font-size:80px;
+font-size:84px;
 margin:0;
 font-weight:800;
-text-shadow:0 20px 40px rgba(0,0,0,.4);
 }
 
 .hero p{
-margin-top:18px;
+margin-top:20px;
 font-size:18px;
 }
 
-.store-btn{
+.enter-btn{
 display:inline-block;
-margin-top:30px;
+margin-top:40px;
 background:var(--brand);
-color:white;
-padding:14px 28px;
+padding:15px 34px;
 border-radius:999px;
 font-weight:700;
+color:white;
+cursor:pointer;
 transition:.3s;
 }
 
-.store-btn:hover{
+.enter-btn:hover{
 transform:translateY(-3px);
-box-shadow:0 10px 30px rgba(0,0,0,.25);
+box-shadow:0 12px 30px rgba(0,0,0,.3);
 }
+
+
+/* HEADER */
+
+header{
+position:sticky;
+top:0;
+background:white;
+border-bottom:1px solid #eee;
+z-index:20;
+}
+
+.header-inner{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:22px 0;
+}
+
+.logo{
+font-size:20px;
+font-weight:800;
+}
+
+nav a{
+margin-left:24px;
+font-weight:600;
+font-size:14px;
+color:#333;
+}
+
 
 /* CORE VALUE */
 
 .values{
-display:grid;
-grid-template-columns:repeat(2,170px);
-justify-content:center;
-gap:50px;
-margin-top:70px;
-}
-
-.circle{
-width:170px;
-height:170px;
-perspective:1000px;
-}
-
-.circle:nth-child(1){
-grid-column:1/3;
-justify-self:center;
-transform:scale(1.1);
-}
-
-.circle:nth-child(2){
-justify-self:end;
-}
-
-.circle:nth-child(3){
-justify-self:start;
-}
-
-.flip{
-width:100%;
-height:100%;
 position:relative;
-transition:transform .6s;
-transform-style:preserve-3d;
+width:520px;
+height:520px;
+margin:80px auto;
 }
 
-.circle:hover .flip{
-transform:rotateY(180deg);
-}
-
-.face{
+.value{
 position:absolute;
-width:100%;
-height:100%;
+width:130px;
+height:130px;
 border-radius:50%;
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
-text-align:center;
-padding:18px;
-backface-visibility:hidden;
+color:white;
 font-weight:700;
-}
-
-.c1 .front{background:#4f6cff;color:white;}
-.c2 .front{background:#8b5cf6;color:white;}
-.c3 .front{background:#22c55e;color:white;}
-
-.back{
-background:#f3f4f6;
-transform:rotateY(180deg);
-font-size:14px;
-}
-
-.core-desc{
 text-align:center;
-margin-top:35px;
-color:var(--muted);
-font-size:17px;
-}
-
-/* ARTISTS */
-
-.artist-wrap{
-overflow:hidden;
-margin-top:70px;
-}
-
-.artist-track{
-display:flex;
-gap:30px;
-animation:scroll 25s linear infinite;
-}
-
-.artist{
-min-width:260px;
-border-radius:var(--radius);
-overflow:hidden;
-border:1px solid #eee;
-background:white;
+padding:10px;
 transition:.35s;
 }
 
+.value span{
+font-size:12px;
+font-weight:400;
+margin-top:6px;
+}
+
+/* 중앙 */
+
+.vA{
+background:#2563eb;
+top:195px;
+left:195px;
+}
+
+/* 육각 배치 */
+
+.vR{background:#7c3aed;top:0;left:195px;}
+.vE{background:#22c55e;top:100px;left:390px;}
+.vF{background:#f59e0b;top:320px;left:390px;}
+.vI{background:#ef4444;top:390px;left:195px;}
+.vS{background:#06b6d4;top:320px;left:0;}
+.vH{background:#6366f1;top:100px;left:0;}
+
+.value:hover{
+transform:scale(1.1);
+box-shadow:0 15px 35px rgba(0,0,0,.2);
+}
+
+
+/* ARTISTS */
+
+.artist-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:35px;
+margin-top:70px;
+}
+
+.artist{
+border-radius:var(--radius);
+overflow:hidden;
+border:1px solid #eee;
+transition:.3s;
+background:white;
+}
+
 .artist:hover{
-transform:translateY(-8px) scale(1.03);
+transform:translateY(-6px);
 box-shadow:0 20px 40px rgba(0,0,0,.12);
 }
 
@@ -263,6 +267,7 @@ color:var(--muted);
 font-weight:400;
 }
 
+
 /* PARTNERS */
 
 .partner-wrap{
@@ -273,14 +278,14 @@ margin-top:70px;
 .partner-track{
 display:flex;
 gap:70px;
-animation:scroll 30s linear infinite;
 align-items:center;
+animation:scroll 15s linear infinite;
 }
 
 .partner-track img{
 height:55px;
-filter:grayscale(100%);
 opacity:.85;
+filter:grayscale(100%);
 transition:.3s;
 }
 
@@ -289,37 +294,44 @@ filter:none;
 opacity:1;
 }
 
+@keyframes scroll{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+
+
+/* STORE */
+
+.store{
+background:#f7f9fc;
+text-align:center;
+}
+
+.store-btn{
+display:inline-block;
+margin-top:30px;
+background:var(--brand);
+color:white;
+padding:16px 36px;
+border-radius:999px;
+font-weight:700;
+}
+
+
 /* FOOTER */
 
 footer{
-background:#f6f7f9;
-padding:70px 0;
+background:#111;
+color:#aaa;
 text-align:center;
+padding:60px 0;
 font-size:14px;
-color:var(--muted);
 }
 
 footer p{
 margin:6px 0;
 }
 
-/* ANIMATION */
-
-@keyframes scroll{
-0%{transform:translateX(0)}
-100%{transform:translateX(-50%)}
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(40px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
 
 /* MOBILE */
 
@@ -330,14 +342,14 @@ font-size:46px;
 }
 
 .values{
-display:flex;
-gap:12px;
+width:320px;
+height:320px;
 }
 
-.circle{
-width:110px;
-height:110px;
-transform:none;
+.value{
+width:80px;
+height:80px;
+font-size:11px;
 }
 
 }
@@ -348,26 +360,13 @@ transform:none;
 
 <body>
 
-<header>
 
-<div class="container header-inner">
+<div class="flip-container" id="flipPage">
 
-<div class="logo">AREFISH</div>
-
-<nav>
-
-<a href="#values">Value</a>
-<a href="#artists">Artists</a>
-<a href="#partners">Partners</a>
-
-</nav>
-
-</div>
-
-</header>
+<div class="flipper">
 
 
-<section class="hero">
+<section class="front hero">
 
 <video autoplay muted loop playsinline>
 <source src="images/video.mp4" type="video/mp4">
@@ -378,21 +377,41 @@ transform:none;
 <h1>AREFISH</h1>
 
 <p>
-Art • Respect • Expression • Future • Inculson • Story • Harmony
+Art • Respect • Expression • Future • Inclusion • Story • Harmony
 </p>
 
-<a class="store-btn"
-href="https://smartstore.naver.com/arcie"
-target="_blank">
-스마트스토어 바로가기
-</a>
+<div class="enter-btn" onclick="flipPage()">
+ENTER
+</div>
 
 </div>
 
 </section>
 
 
-<section id="values">
+
+<div class="back">
+
+
+<header>
+
+<div class="container header-inner">
+
+<div class="logo">AREFISH</div>
+
+<nav>
+<a href="#value">Value</a>
+<a href="#artists">Artists</a>
+<a href="#partners">Partners</a>
+</nav>
+
+</div>
+
+</header>
+
+
+
+<section id="value">
 
 <div class="container">
 
@@ -400,36 +419,47 @@ target="_blank">
 
 <div class="values">
 
-<div class="circle c1">
-<div class="flip">
-<div class="face front">사회연결</div>
-<div class="face back">예술과 사회를 연결</div>
-</div>
+<div class="value vA">
+Art
+<span>예술을 통해 재능을 발견하고 표현</span>
 </div>
 
-<div class="circle c2">
-<div class="flip">
-<div class="face front">예술성장</div>
-<div class="face back">아티스트 창작 지원</div>
-</div>
+<div class="value vR">
+Respect
+<span>다름을 존중하고 가능성을 인정</span>
 </div>
 
-<div class="circle c3">
-<div class="flip">
-<div class="face front">커뮤니티</div>
-<div class="face back">사람을 연결하는 예술</div>
+<div class="value vE">
+Expression
+<span>자기표현으로 세상과 연결</span>
 </div>
+
+<div class="value vF">
+Future
+<span>예술로 새로운 미래 창조</span>
+</div>
+
+<div class="value vI">
+Inclusion
+<span>장애와 비장애의 경계 없는 사회</span>
+</div>
+
+<div class="value vS">
+Story
+<span>아티스트의 삶을 기록</span>
+</div>
+
+<div class="value vH">
+Harmony
+<span>다양성이 만드는 예술 공동체</span>
 </div>
 
 </div>
-
-<p class="core-desc">
-예술적 재능이 있는 발달장애인을 사회로 연결하는 플랫폼
-</p>
 
 </div>
 
 </section>
+
 
 
 <section id="artists">
@@ -438,13 +468,11 @@ target="_blank">
 
 <h2>AREFISH Artists</h2>
 
-<div class="artist-wrap">
-
-<div class="artist-track">
+<div class="artist-grid">
 
 <div class="artist">
 <img src="images/공민배.jpg">
-<p>공민배<span>바이올리니스트 · 서울특별시 별별하모니아 오케스트라 악장</span></p>
+<p>공민배<span>바이올리니스트 · 별별하모니아 오케스트라 악장</span></p>
 </div>
 
 <div class="artist">
@@ -455,23 +483,6 @@ target="_blank">
 <div class="artist">
 <img src="images/전문기.jpg">
 <p>전문기<span>국악 신동</span></p>
-</div>
-
-<div class="artist">
-<img src="images/공민배.jpg">
-<p>공민배<span>바이올리니스트 · 서울특별시 별별하모니아 오케스트라 악장</span></p>
-</div>
-
-<div class="artist">
-<img src="images/이상우.jpg">
-<p>이상우<span>피아니스트</span></p>
-</div>
-
-<div class="artist">
-<img src="images/전문기.jpg">
-<p>전문기<span>국악 신동</span></p>
-</div>
-
 </div>
 
 </div>
@@ -479,6 +490,7 @@ target="_blank">
 </div>
 
 </section>
+
 
 
 <section id="partners">
@@ -495,16 +507,11 @@ target="_blank">
 <img src="images/GCOO_LOGO.png">
 <img src="images/h1_01.png">
 <img src="images/HDC랩스_LOGO.png">
-<img src="images/vaccum.png">
-<img src="images/tes.png">
-<img src="images/ces.png">
-<img src="images/itek.png">
-<img src="images/ottuki.png">
-<img src="images/joheng.png">
-<img src="images/enob.png">
-<img src="images/iqvia.png">
 <img src="images/homeplus.png">
+<img src="images/iqvia.png">
+<img src="images/ottuki.png">
 
+<img src="images/hosp_logo.png">
 <img src="images/GCOO_LOGO.png">
 <img src="images/h1_01.png">
 <img src="images/HDC랩스_LOGO.png">
@@ -518,37 +525,47 @@ target="_blank">
 </section>
 
 
+
+<section class="store">
+
+<div class="container">
+
+<h2>AREFISH Store</h2>
+
+<p>발달장애 아티스트와 함께 만든 굿즈를 만나보세요</p>
+
+<a class="store-btn"
+href="https://smartstore.naver.com/arcie"
+target="_blank">
+스마트스토어 바로가기
+</a>
+
+</div>
+
+</section>
+
+
+
 <footer>
 
 <p>상호명: (주)물고기엔터</p>
 <p>대표자: 채종성</p>
 <p>사업자 등록번호: 426-86-03616</p>
 
-<p style="margin-top:12px;">
-© 2026 AREFISH
-</p>
+<p style="margin-top:12px;">© 2026 AREFISH</p>
 
 </footer>
+
+</div>
+</div>
+</div>
 
 
 <script>
 
-let lastScroll = 0;
-const header = document.querySelector("header");
-
-window.addEventListener("scroll", () => {
-
-const currentScroll = window.pageYOffset;
-
-if (currentScroll > lastScroll && currentScroll > 80) {
-header.classList.add("hide");
-} else {
-header.classList.remove("hide");
+function flipPage(){
+document.getElementById("flipPage").classList.add("flip");
 }
-
-lastScroll = currentScroll;
-
-});
 
 </script>
 
