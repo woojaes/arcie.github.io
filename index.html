@@ -66,7 +66,6 @@ position:relative;
 .slides{
 display:flex;
 flex-direction:column;
-/* 🔥 중요: height 제거 */
 transition:transform 1s cubic-bezier(.77,0,.18,1);
 }
 
@@ -77,7 +76,7 @@ position:relative;
 display:flex;
 align-items:center;
 justify-content:center;
-flex-shrink:0; /* 🔥 추가 (쪼그라듦 방지) */
+flex-shrink:0;
 }
 
 /* MEDIA */
@@ -318,8 +317,10 @@ index=(index+1)%total;
 go(index);
 },5000);
 
-/* WHEEL */
+/* WHEEL (🔥 수정된 부분) */
 window.addEventListener("wheel",(e)=>{
+e.preventDefault();
+
 if(isScrolling) return;
 
 if(e.deltaY > 0){
@@ -328,7 +329,8 @@ index = Math.min(index+1,total-1);
 index = Math.max(index-1,0);
 }
 go(index);
-});
+
+},{ passive:false });
 
 update();
 
