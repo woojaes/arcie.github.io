@@ -21,6 +21,7 @@ background:#000;
 color:#fff;
 font-family:-apple-system,BlinkMacSystemFont,Pretendard,system-ui;
 overflow:hidden;
+overscroll-behavior:none;
 }
 
 /* HEADER */
@@ -317,7 +318,7 @@ index=(index+1)%total;
 go(index);
 },5000);
 
-/* WHEEL (🔥 수정된 부분) */
+/* WHEEL */
 window.addEventListener("wheel",(e)=>{
 e.preventDefault();
 
@@ -331,6 +332,32 @@ index = Math.max(index-1,0);
 go(index);
 
 },{ passive:false });
+
+/* TOUCH (모바일) */
+let startY=0;
+let endY=0;
+
+window.addEventListener("touchstart",(e)=>{
+startY=e.touches[0].clientY;
+});
+
+window.addEventListener("touchend",(e)=>{
+endY=e.changedTouches[0].clientY;
+
+if(isScrolling) return;
+
+let diff=startY-endY;
+
+if(Math.abs(diff)<50) return;
+
+if(diff>0){
+index=Math.min(index+1,total-1);
+}else{
+index=Math.max(index-1,0);
+}
+
+go(index);
+});
 
 update();
 
