@@ -11,17 +11,17 @@
 /* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ROOT */
-:root{
---text:#111;
---muted:#777;
---line:#eee;
+/* BODY */
+html,body{
+height:100%;
+overflow:hidden;
+font-family:-apple-system,BlinkMacSystemFont,Pretendard,system-ui;
 }
 
-/* BODY */
-body{
-font-family:-apple-system,BlinkMacSystemFont,Pretendard,system-ui;
-overflow:hidden;
+/* WRAPPER */
+.wrapper{
+height:100%;
+transition:transform .9s cubic-bezier(.77,0,.18,1);
 }
 
 /* SECTION */
@@ -42,30 +42,17 @@ width:100%;
 padding:14px 5%;
 display:flex;
 justify-content:space-between;
-align-items:center;
 z-index:100;
 background:rgba(255,255,255,0.9);
 backdrop-filter:blur(10px);
-border-bottom:1px solid var(--line);
+border-bottom:1px solid #eee;
 }
 
-.logo{
-font-weight:700;
-font-size:14px;
-}
-
-nav a{
-margin-left:14px;
-font-size:12px;
-color:#555;
-text-decoration:none;
-}
+.logo{font-weight:700;font-size:14px;}
+nav a{margin-left:14px;font-size:12px;color:#555;cursor:pointer}
 
 /* HERO */
-#hero{
-position:relative;
-overflow:hidden;
-}
+#hero{overflow:hidden;color:#fff;}
 
 .bg-video{
 position:absolute;
@@ -73,7 +60,6 @@ width:100%;
 height:100%;
 object-fit:cover;
 z-index:-2;
-filter:brightness(1.2);
 }
 
 #hero::after{
@@ -81,68 +67,74 @@ content:"";
 position:absolute;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.25);
+background:rgba(0,0,0,0.3);
 z-index:-1;
 }
 
-.hero{
-text-align:center;
-color:#fff;
+.hero{text-align:center;}
+.hero h1{font-size:32px;}
+.hero p{color:#ddd;margin-top:10px;}
+
+/* 🔽 스크롤 유도 */
+.scroll-indicator{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+cursor:pointer;
+z-index:10;
 }
 
-.hero h1{
-font-size:32px;
-font-weight:700;
-line-height:1.4;
-text-shadow:0 2px 12px rgba(0,0,0,0.4);
+/* 마우스 모양 */
+.mouse{
+width:26px;
+height:42px;
+border:2px solid #fff;
+border-radius:20px;
+position:relative;
 }
 
-.hero p{
-font-size:14px;
-color:#ddd;
-margin-top:8px;
+/* 움직이는 점 */
+.wheel{
+width:4px;
+height:8px;
+background:#fff;
+position:absolute;
+top:8px;
+left:50%;
+transform:translateX(-50%);
+border-radius:2px;
+animation:scroll 1.4s infinite;
+}
+
+@keyframes scroll{
+0%{opacity:0; transform:translate(-50%,0)}
+50%{opacity:1}
+100%{opacity:0; transform:translate(-50%,12px)}
 }
 
 /* VIDEO */
-.video-section{
-background:#000;
-color:#fff;
-flex-direction:column;
-}
+#video{background:#000;color:#fff;flex-direction:column;}
 
 .video-wrap{
 width:100%;
 max-width:900px;
 aspect-ratio:16/9;
 }
+.video-wrap iframe{width:100%;height:100%}
 
-.video-wrap iframe{
-width:100%;
-height:100%;
-border:none;
-}
+#video p{margin-top:14px;color:#aaa}
 
-.video-section p{
-margin-top:14px;
-font-size:13px;
-color:#aaa;
-}
-
-/* STORY (완전 재설계) */
-#story{
-position:relative;
-color:#fff;
-overflow:hidden;
-}
+/* STORY */
+#story{color:#fff;}
 
 #story::before{
 content:"";
 position:absolute;
 width:100%;
 height:100%;
-background:url('images/slide2.jpeg') center/cover no-repeat;
-filter:blur(2px) brightness(1);
-transform:scale(1.05);
+background:url('images/slide2.jpeg') center/cover;
+filter:blur(2px);
 z-index:-2;
 }
 
@@ -155,80 +147,39 @@ background:rgba(0,0,0,0.3);
 z-index:-1;
 }
 
-/* 컨테이너 */
-.story-wrap{
-max-width:900px;
-width:100%;
-text-align:center;
-}
+.story-wrap{text-align:center;}
+.story-title{font-size:24px;margin-bottom:20px;}
+.story-desc{max-width:600px;margin:0 auto 40px;}
 
-/* 타이틀 */
-.story-title{
-font-size:24px;
-font-weight:700;
-margin-bottom:20px;
-}
-
-/* 본문 */
-.story-desc{
-max-width:600px;
-margin:0 auto 40px;
-font-size:15px;
-line-height:1.8;
-color:#eee;
-}
-
-/* VALUES */
 .values{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:20px;
 }
 
-/* 카드 */
 .value{
-padding:26px 20px;
-background:rgba(255,255,255,0.12);
-backdrop-filter:blur(8px);
-border-radius:14px;
-transition:all .3s ease;
-cursor:pointer;
+padding:26px;
+background:rgba(255,255,255,0.1);
+border-radius:12px;
+transition:.3s;
 }
 
-/* 인터랙션 */
 .value:hover{
 transform:translateY(-10px);
 background:#fff;
 color:#000;
-box-shadow:0 20px 40px rgba(0,0,0,0.25);
-}
-
-.value h3{
-font-size:13px;
-letter-spacing:1.5px;
-margin-bottom:10px;
-}
-
-.value p{
-font-size:14px;
 }
 
 /* CONTACT */
-#contact{
-position:relative;
-color:#fff;
-overflow:hidden;
-text-align:center;
-}
+#contact{color:#fff;text-align:center;}
 
 #contact::before{
 content:"";
 position:absolute;
 width:100%;
 height:100%;
-background:url('images/contact.jpeg') center/cover no-repeat;
-filter:blur(2px) brightness(1.05);
-transform:scale(1.05);
+background:url('images/contact.jpeg') center/cover;
+filter:blur(2px);
 z-index:-2;
 }
 
@@ -237,52 +188,30 @@ content:"";
 position:absolute;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.25);
+background:rgba(0,0,0,0.3);
 z-index:-1;
 }
 
-.contact{
-max-width:400px;
-margin:auto;
-}
-
-.contact h2{
-font-size:18px;
-margin-bottom:16px;
-}
-
-.contact-info{
-font-size:14px;
-line-height:1.8;
-margin-bottom:24px;
-}
+.contact{max-width:400px;margin:auto;}
 
 input,textarea{
 width:100%;
 padding:12px;
 margin-bottom:10px;
 border:none;
-border-radius:4px;
 }
 
 button{
 width:100%;
 padding:14px;
-border:none;
 background:#fff;
+border:none;
 }
 
 /* 반응형 */
 @media(max-width:768px){
-
+.values{grid-template-columns:1fr;}
 .hero h1{font-size:24px}
-
-.values{
-grid-template-columns:1fr;
-}
-
-.story-title{font-size:20px}
-
 }
 
 </style>
@@ -293,18 +222,19 @@ grid-template-columns:1fr;
 <header>
 <div class="logo">AREFISH</div>
 <nav>
-<a href="#hero">HOME</a>
-<a href="#video">VIDEO</a>
-<a href="#story">STORY</a>
-<a href="#contact">CONTACT</a>
+<a onclick="goTo(0)">HOME</a>
+<a onclick="goTo(1)">VIDEO</a>
+<a onclick="goTo(2)">STORY</a>
+<a onclick="goTo(3)">CONTACT</a>
 </nav>
 </header>
 
+<div class="wrapper" id="wrapper">
+
 <!-- HERO -->
 <section id="hero">
-
 <video class="bg-video" autoplay muted loop playsinline>
-<source src="images/storys.mp4" type="video/mp4">
+<source src="images/storys.mp4">
 </video>
 
 <div class="hero">
@@ -312,10 +242,17 @@ grid-template-columns:1fr;
 <p>Inclusive Art For All</p>
 </div>
 
+<!-- 🔽 스크롤 유도 -->
+<div class="scroll-indicator" onclick="next()">
+<div class="mouse">
+<div class="wheel"></div>
+</div>
+</div>
+
 </section>
 
 <!-- VIDEO -->
-<section id="video" class="video-section">
+<section id="video">
 <div class="video-wrap">
 <iframe src="https://www.youtube.com/embed/SP6CLVX21Iw"></iframe>
 </div>
@@ -324,46 +261,25 @@ grid-template-columns:1fr;
 
 <!-- STORY -->
 <section id="story">
-
 <div class="story-wrap">
-
 <div class="story-title">AREFISH STORY</div>
-
 <div class="story-desc">
 정답 없는 색, 규칙 없는 선.<br>
-하지만 그 안에는 가장 솔직한 생명이 있습니다.<br><br>
-아르피쉬는 예술을 통해 세상을 연결하고<br>
-창작이 삶이 되는 구조를 만듭니다.
+하지만 그 안에는 가장 솔직한 생명이 있습니다.
 </div>
 
 <div class="values">
-<div class="value">
-<h3>INCLUSION</h3>
-<p>다름은 가능성입니다</p>
-</div>
-
-<div class="value">
-<h3>AUTHENTICITY</h3>
-<p>있는 그대로의 가치</p>
-</div>
-
-<div class="value">
-<h3>INDEPENDENCE</h3>
-<p>예술로 자립</p>
+<div class="value"><h3>INCLUSION</h3><p>다름은 가능성</p></div>
+<div class="value"><h3>AUTHENTICITY</h3><p>있는 그대로</p></div>
+<div class="value"><h3>INDEPENDENCE</h3><p>예술로 자립</p></div>
 </div>
 </div>
-
-</div>
-
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
-
 <div class="contact">
-
 <h2>CONTACT</h2>
-
 <div class="contact-info">
 (주)물고기엔터테인먼트<br>
 대표: 채종성<br>
@@ -371,15 +287,71 @@ grid-template-columns:1fr;
 </div>
 
 <form>
-<input type="text" placeholder="이름" required>
-<input type="email" placeholder="이메일" required>
-<textarea rows="4" placeholder="문의 내용"></textarea>
-<button type="submit">문의 보내기</button>
+<input type="text" placeholder="이름">
+<input type="email" placeholder="이메일">
+<textarea placeholder="문의 내용"></textarea>
+<button>문의 보내기</button>
 </form>
+</div>
+</section>
 
 </div>
 
-</section>
+<script>
+
+let index = 0;
+let lock = false;
+const total = 4;
+const wrapper = document.getElementById("wrapper");
+
+function move(){
+wrapper.style.transform = `translateY(-${index*100}vh)`;
+}
+
+function next(){
+if(index >= total-1 || lock) return;
+index++;
+run();
+}
+
+function prev(){
+if(index <= 0 || lock) return;
+index--;
+run();
+}
+
+function goTo(i){
+if(lock) return;
+index = i;
+run();
+}
+
+function run(){
+lock = true;
+move();
+setTimeout(()=>lock=false,900);
+}
+
+window.addEventListener("wheel",(e)=>{
+if(lock) return;
+if(e.deltaY>0) next();
+else prev();
+});
+
+/* 모바일 */
+let startY=0;
+
+window.addEventListener("touchstart",(e)=>{
+startY=e.touches[0].clientY;
+});
+
+window.addEventListener("touchend",(e)=>{
+let endY=e.changedTouches[0].clientY;
+if(startY-endY>50) next();
+else if(endY-startY>50) prev();
+});
+
+</script>
 
 </body>
 </html>
