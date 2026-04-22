@@ -26,6 +26,21 @@ html,body {
   overflow:hidden;
 }
 
+/* BOOT SCREEN */
+#boot {
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:14px;
+  letter-spacing:2px;
+  cursor:pointer;
+}
+
 /* WRAPPER */
 .wrapper {
   height:100%;
@@ -161,7 +176,6 @@ nav a {
   font-size:12px;
   cursor:pointer;
   border-radius:20px;
-  transition:.3s;
 }
 
 .story-buttons button.active {
@@ -201,7 +215,6 @@ nav a {
   background:rgba(255,255,255,0.08);
   border-radius:14px;
   padding:10px;
-  flex-shrink:0;
 }
 
 .character-card img {
@@ -281,22 +294,6 @@ nav a {
   font-weight:900;
   letter-spacing:3px;
   margin-bottom:35px;
-  position:relative;
-}
-
-.contact-title::after {
-  content:"";
-  display:block;
-  width:0;
-  height:2px;
-  background:#fff;
-  margin:12px auto 0;
-  animation:line 1s ease forwards;
-  animation-delay:.6s;
-}
-
-@keyframes line {
-  to { width:120px; }
 }
 
 .contact p {
@@ -317,10 +314,7 @@ nav a {
 }
 
 @keyframes contactShow {
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
+  to {opacity:1;transform:translateY(0);}
 }
 
 .hidden { display:none; }
@@ -329,6 +323,9 @@ nav a {
 </head>
 
 <body>
+
+<!-- BOOT -->
+<div id="boot">CLICK TO ENTER</div>
 
 <header>
   <div class="logo">AREFISH</div>
@@ -344,9 +341,18 @@ nav a {
 
 <!-- HERO -->
 <section id="hero">
-  <video class="bg-video" autoplay muted loop playsinline>
-    <source src="images/storys.mp4">
-  </video>
+
+<video
+  id="heroVideo"
+  class="bg-video"
+  muted
+  playsinline
+  autoplay
+  preload="auto"
+  poster="images/contact.jpeg"
+>
+  <source src="images/storys.mp4" type="video/mp4">
+</video>
 
   <div class="hero">
     <h1>
@@ -361,7 +367,11 @@ nav a {
 <!-- VIDEO -->
 <section id="video">
   <div class="video-wrap">
-    <iframe src="https://www.youtube.com/embed/SP6CLVX21Iw?autoplay=1&mute=1&controls=0&loop=1&playlist=SP6CLVX21Iw"></iframe>
+    <iframe
+      src="https://www.youtube.com/embed/SP6CLVX21Iw?autoplay=1&mute=1&controls=0&loop=1&playlist=SP6CLVX21Iw&playsinline=1"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
   </div>
 </section>
 
@@ -375,54 +385,29 @@ nav a {
   </div>
 
   <div id="storyContent" class="story-wrap">
-    <img src="images/story.jpg" alt="">
+    <img src="images/story.jpg">
     <p>우리는 예술의 경계를 다시 정의합니다</p>
   </div>
 
   <div id="characterContent" class="story-wrap hidden">
     <div class="character-slider">
       <div class="character-track" id="charTrack">
-
         <div class="character-card">
           <img src="images/chars1.jpg">
           <div class="character-name">써니</div>
         </div>
-
         <div class="character-card">
           <img src="images/chars2.jpg">
           <div class="character-name">트윙키</div>
         </div>
-
         <div class="character-card">
           <img src="images/chars3.jpg">
           <div class="character-name">재피</div>
         </div>
-
         <div class="character-card">
           <img src="images/chars4.jpg">
           <div class="character-name">레이니</div>
         </div>
-
-        <div class="character-card">
-          <img src="images/chars1.jpg">
-          <div class="character-name">써니</div>
-        </div>
-
-        <div class="character-card">
-          <img src="images/chars2.jpg">
-          <div class="character-name">트윙키</div>
-        </div>
-
-        <div class="character-card">
-          <img src="images/chars3.jpg">
-          <div class="character-name">재피</div>
-        </div>
-
-        <div class="character-card">
-          <img src="images/chars4.jpg">
-          <div class="character-name">레이니</div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -430,22 +415,18 @@ nav a {
   <div id="goodsContent" class="story-wrap hidden">
     <div class="slider">
       <div class="slides" id="slides">
-
         <div class="goods-item">
           <img src="images/goods1.jpg">
           <div class="goods-name">아르피시 폰케이스</div>
         </div>
-
         <div class="goods-item">
           <img src="images/goods2.jpg">
           <div class="goods-name">아르피시 열쇠고리</div>
         </div>
-
         <div class="goods-item">
           <img src="images/goods3.jpg">
           <div class="goods-name">아르피시 레인보우 슬리퍼</div>
         </div>
-
       </div>
     </div>
   </div>
@@ -458,7 +439,7 @@ nav a {
     <div class="contact-title">CONTACT US</div>
     <p>상호명: (주)물고기엔터</p>
     <p>대표자: 채종성</p>
-    <p>사업자 등록번호: 426-86-03616</p>
+    <p>사업자 등록번호:<span> 426-86-03616</span></p>
     <p>이메일: mulgogienter@gmail.com</p>
   </div>
 </section>
@@ -467,84 +448,107 @@ nav a {
 
 <script>
 
-/* PAGE MOVE */
-let index=0, lock=false;
-const wrapper=document.getElementById("wrapper");
+/* =========================
+   NETFLIX AUTOPLAY FIXED ENGINE
+========================= */
+
+const boot = document.getElementById("boot");
+const heroVideo = document.getElementById("heroVideo");
+
+async function startPlayback() {
+  try {
+    heroVideo.muted = true;
+    heroVideo.playsInline = true;
+
+    heroVideo.load();        // 🔴 핵심
+    heroVideo.currentTime = 0;
+
+    await heroVideo.play();
+
+  } catch (e) {
+    console.log(e);
+  }
+
+  boot.style.display = "none";
+}
+
+boot.addEventListener("click", startPlayback);
+boot.addEventListener("touchstart", startPlayback);
+
+/* NAV */
+let index = 0;
+let lock = false;
+const wrapper = document.getElementById("wrapper");
 
 function goTo(i){
   if(lock) return;
-  index=i;
-  lock=true;
-  wrapper.style.transform = `translateY(-${index*100}vh)`;
+
+  index = i;
+  lock = true;
+
+  wrapper.style.transform = `translateY(-${index * 100}vh)`;
+
   setTimeout(()=>lock=false,900);
+
+  if(index === 0){
+    heroVideo.load();
+    heroVideo.currentTime = 0;
+    heroVideo.play().catch(()=>{});
+  }
 }
 
-/* WHEEL */
 window.addEventListener("wheel",(e)=>{
   if(lock) return;
+
   if(e.deltaY>0 && index<3) goTo(index+1);
   if(e.deltaY<0 && index>0) goTo(index-1);
 });
 
-/* TAB */
-const btnStory=document.getElementById("btnStory");
-const btnCharacter=document.getElementById("btnCharacter");
-const btnGoods=document.getElementById("btnGoods");
+/* TABS */
+const btnStory = document.getElementById("btnStory");
+const btnCharacter = document.getElementById("btnCharacter");
+const btnGoods = document.getElementById("btnGoods");
 
-const storyContent=document.getElementById("storyContent");
-const characterContent=document.getElementById("characterContent");
-const goodsContent=document.getElementById("goodsContent");
+const storyContent = document.getElementById("storyContent");
+const characterContent = document.getElementById("characterContent");
+const goodsContent = document.getElementById("goodsContent");
 
-function reset(){
+function resetTabs(){
   storyContent.classList.add("hidden");
   characterContent.classList.add("hidden");
   goodsContent.classList.add("hidden");
+
   btnStory.classList.remove("active");
   btnCharacter.classList.remove("active");
   btnGoods.classList.remove("active");
 }
 
-function showTab(el){
-  reset();
-  el.classList.remove("hidden");
-}
+btnStory.onclick = () => { resetTabs(); storyContent.classList.remove("hidden"); btnStory.classList.add("active"); };
+btnCharacter.onclick = () => { resetTabs(); characterContent.classList.remove("hidden"); btnCharacter.classList.add("active"); };
+btnGoods.onclick = () => { resetTabs(); goodsContent.classList.remove("hidden"); btnGoods.classList.add("active"); };
 
-btnStory.onclick=()=>{
-  showTab(storyContent);
-  btnStory.classList.add("active");
-}
-
-btnCharacter.onclick=()=>{
-  showTab(characterContent);
-  btnCharacter.classList.add("active");
-}
-
-btnGoods.onclick=()=>{
-  showTab(goodsContent);
-  btnGoods.classList.add("active");
-}
-
-/* CHARACTER AUTO */
-const track=document.getElementById("charTrack");
-let pos=0;
+/* LOOP */
+const track = document.getElementById("charTrack");
+let pos = 0;
 
 setInterval(()=>{
-  pos+=0.4;
+  if(!track) return;
+  pos += 0.4;
   track.style.transform = `translateX(-${pos}px)`;
-  if(pos > track.scrollWidth/2){
-    pos=0;
-  }
+  if(pos > track.scrollWidth/2) pos = 0;
 },16);
 
-/* GOODS */
-let slideIndex=0;
-const slides=document.getElementById("slides");
+const slides = document.getElementById("slides");
+let s = 0;
 
 setInterval(()=>{
-  slideIndex++;
-  if(slideIndex>=3) slideIndex=0;
-  slides.style.transform = `translateX(-${slideIndex*100}%)`;
+  if(!slides) return;
+  s++;
+  if(s>=3) s=0;
+  slides.style.transform = `translateX(-${s*100}%)`;
 },2500);
+
+window.goTo = goTo;
 
 </script>
 
