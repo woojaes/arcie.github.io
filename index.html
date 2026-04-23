@@ -94,7 +94,7 @@ nav a {
   width:100%;
   height:100%;
   object-fit:cover;
-  z-index:-2;
+  z-index:0;
 }
 
 #hero::after {
@@ -103,12 +103,13 @@ nav a {
   width:100%;
   height:100%;
   background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.6));
-  z-index:-1;
+  z-index:0;
 }
 
 .hero {
   max-width:360px;
   animation:fadeUp 1s ease;
+  z-index:1;
 }
 
 .hero h1 {
@@ -348,6 +349,7 @@ nav a {
   muted
   playsinline
   autoplay
+  loop
   preload="auto"
   poster="images/contact.jpeg"
 >
@@ -369,7 +371,7 @@ nav a {
   <div class="video-wrap">
     <iframe
       src="https://www.youtube.com/embed/SP6CLVX21Iw?autoplay=1&mute=1&controls=0&loop=1&playlist=SP6CLVX21Iw&playsinline=1"
-      allow="autoplay; encrypted-media"
+
       allowfullscreen>
     </iframe>
   </div>
