@@ -370,10 +370,11 @@ nav a {
 }
 
 @keyframes arrowMove{
-  0%{opacity:0; transform:translateY(0);}
+  0%{opacity:0; transform:rotate(-45deg) translateY(0);}
   50%{opacity:1;}
-  100%{opacity:0; transform:translateY(8px);}
+  100%{opacity:0; transform:rotate(-45deg) translateY(6px);}
 }
+
 /* ANIMATION */
 @keyframes fadeUp {
   from {opacity:0;transform:translateY(20px);}
@@ -449,13 +450,12 @@ nav a {
 <section id="video">
   <div class="video-wrap">
     <iframe
-      src="https://www.youtube.com/embed/SP6CLVX21Iw?autoplay=1&mute=1&controls=0&loop=1&playlist=SP6CLVX21Iw&playsinline=1"
-
+      id="ytplayer"
+      src="https://www.youtube.com/embed/SP6CLVX21Iw?autoplay=1&mute=1&controls=0&loop=1&playlist=SP6CLVX21Iw&playsinline=1&enablejsapi=1"
+      allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
   </div>
-
-  
 </section>
 
 <!-- STORY -->
@@ -674,6 +674,20 @@ window.addEventListener("scroll", ()=>{
     el.style.opacity = 0;
   });
 });
+
+function unmuteAndPlay(){
+  const iframe = document.getElementById('ytplayer');
+
+  iframe.contentWindow.postMessage(
+    '{"event":"command","func":"unMute","args":""}', '*'
+  );
+
+  iframe.contentWindow.postMessage(
+    '{"event":"command","func":"playVideo","args":""}', '*'
+  );
+}
+
+document.addEventListener("click", unmuteAndPlay, { once: true });
 </script>
 
 </body>
