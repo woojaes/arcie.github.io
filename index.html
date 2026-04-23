@@ -56,6 +56,7 @@ section {
   padding:80px 20px;
   position:relative;
   text-align:center;
+  -webkit-overflow-scrolling: touch;
   overflow-y:auto;
 }
 
@@ -303,6 +304,76 @@ nav a {
   color:#ddd;
 }
 
+/* SCROLL INDICATOR */
+.scroll-indicator{
+  position:absolute;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  opacity:0.7;
+  z-index:2;
+}
+
+/* 마우스 모양 */
+.mouse{
+  width:22px;
+  height:36px;
+  border:2px solid #fff;
+  border-radius:12px;
+  position:relative;
+}
+
+.wheel{
+  width:3px;
+  height:6px;
+  background:#fff;
+  border-radius:2px;
+  position:absolute;
+  top:6px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:wheelMove 1.5s infinite;
+}
+
+/* 화살표 */
+.arrow{
+  width:2px;
+  height:12px;
+  background:#fff;
+  margin-top:8px;
+  position:relative;
+  animation:arrowMove 1.5s infinite;
+}
+
+/* 화살촉 */
+.arrow::after{
+  content:"";
+  position:absolute;
+  bottom:-4px;
+  left:50%;
+  transform:translateX(-50%);
+  width:6px;
+  height:6px;
+  border-left:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform:translateX(-50%) rotate(-45deg);
+}
+
+/* 애니메이션 */
+@keyframes wheelMove{
+  0%{opacity:0; top:6px;}
+  50%{opacity:1;}
+  100%{opacity:0; top:16px;}
+}
+
+@keyframes arrowMove{
+  0%{opacity:0; transform:translateY(0);}
+  50%{opacity:1;}
+  100%{opacity:0; transform:translateY(8px);}
+}
 /* ANIMATION */
 @keyframes fadeUp {
   from {opacity:0;transform:translateY(20px);}
@@ -364,6 +435,14 @@ nav a {
     </h1>
     <p>Inclusive Art For All</p>
   </div>
+
+  <div class="scroll-indicator">
+  <div class="mouse">
+    <div class="wheel"></div>
+  </div>
+  <div class="arrow"></div>
+</div>
+
 </section>
 
 <!-- VIDEO -->
@@ -375,6 +454,8 @@ nav a {
       allowfullscreen>
     </iframe>
   </div>
+
+  
 </section>
 
 <!-- STORY -->
@@ -551,6 +632,48 @@ setInterval(()=>{
 
 window.goTo = goTo;
 
+let touchStartY = 0;
+let touchEndY = 0;
+
+window.addEventListener("touchstart", (e)=>{
+  touchStartY = e.touches[0].clientY;
+}, { passive:true });
+
+window.addEventListener("touchend", (e)=>{
+  touchEndY = e.changedTouches[0].clientY;
+  handleSwipe();
+}, { passive:true });
+
+function handleSwipe(){
+  if(lock) return;
+
+  const currentSection = document.querySelectorAll("section")[index];
+
+  const atTop = currentSection.scrollTop === 0;
+  const atBottom = currentSection.scrollHeight - currentSection.scrollTop <= currentSection.clientHeight + 1;
+
+  const diff = touchStartY - touchEndY;
+
+  // 아래로 스와이프 (다음 섹션)
+  if(diff > 50){
+    if(atBottom && index < 3){
+      goTo(index + 1);
+    }
+  }
+
+  // 위로 스와이프 (이전 섹션)
+  if(diff < -50){
+    if(atTop && index > 0){
+      goTo(index - 1);
+    }
+  }
+}
+
+window.addEventListener("scroll", ()=>{
+  document.querySelectorAll('.scroll-indicator').forEach(el=>{
+    el.style.opacity = 0;
+  });
+});
 </script>
 
 </body>
