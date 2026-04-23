@@ -338,41 +338,11 @@ nav a {
   animation:wheelMove 1.5s infinite;
 }
 
-/* 화살표 */
-.arrow{
-  width:2px;
-  height:12px;
-  background:#fff;
-  margin-top:8px;
-  position:relative;
-  animation:arrowMove 1.5s infinite;
-}
-
-/* 화살촉 */
-.arrow::after{
-  content:"";
-  position:absolute;
-  bottom:-4px;
-  left:50%;
-  transform:translateX(-50%);
-  width:6px;
-  height:6px;
-  border-left:2px solid #fff;
-  border-bottom:2px solid #fff;
-  transform:translateX(-50%) rotate(-45deg);
-}
-
 /* 애니메이션 */
 @keyframes wheelMove{
   0%{opacity:0; top:6px;}
   50%{opacity:1;}
   100%{opacity:0; top:16px;}
-}
-
-@keyframes arrowMove{
-  0%{opacity:0; transform:rotate(-45deg) translateY(0);}
-  50%{opacity:1;}
-  100%{opacity:0; transform:rotate(-45deg) translateY(6px);}
 }
 
 /* ANIMATION */
